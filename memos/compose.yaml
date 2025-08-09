@@ -1,7 +1,7 @@
 ---
 services:
   memos:
-    image: docker.io/neosmemo/memos:latest
+    image: docker.io/neosmemo/memos:stable
     container_name: memos
     hostname: memos
     restart: unless-stopped
