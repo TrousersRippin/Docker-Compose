@@ -1,0 +1,40 @@
+---
+services:
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    hostname: overseerr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - ${OVERSEERR_PORT}:5055/tcp
+    volumes:
+      - $HOME/containers/storage/overseerr/config:/config:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.overseerr.entrypoints=http
+      - traefik.http.routers.overseerr.rule=Host(`overseerr.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.overseerr-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.overseerr.middlewares=overseerr-https-redirect
+      - traefik.http.routers.overseerr-secure.entrypoints=https
+      - traefik.http.routers.overseerr-secure.rule=Host(`overseerr.${HOST_DOMAIN}`)
+      - traefik.http.routers.overseerr-secure.tls=true
+      - traefik.http.routers.overseerr-secure.service=overseerr
+      - traefik.http.services.overseerr.loadbalancer.server.port=5055
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true

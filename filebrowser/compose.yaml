@@ -1,0 +1,47 @@
+---
+services:
+  filebrowser:
+    image: docker.io/filebrowser/filebrowser:latest
+    container_name: filebrowser
+    hostname: filebrowser
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - FB_USERNAME=${FB_USERNAME}
+      - FB_PASSWORD=${FB_PASSWORD}
+    healthcheck:
+      disable: true
+    ports:
+      - ${FB_PORT}:8005/tcp
+    volumes:
+      - $HOME/containers/storage/filebrowser/config:/config:rw,Z
+      - $HOME/containers/storage/filebrowser/database:/database:rw,Z
+      - /:/srv:rw,z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.filebrowser.entrypoints=http
+      - traefik.http.routers.filebrowser.rule=Host(`filebrowser.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.filebrowser-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.filebrowser.middlewares=filebrowser-https-redirect
+      - traefik.http.routers.filebrowser-secure.entrypoints=https
+      - traefik.http.routers.filebrowser-secure.rule=Host(`filebrowser.${HOST_DOMAIN}`)
+      - traefik.http.routers.filebrowser-secure.tls=true
+      - traefik.http.routers.filebrowser-secure.service=filebrowser
+      - traefik.http.services.filebrowser.loadbalancer.server.port=8005
+      - traefik.http.routers.filebrowser-secure.middlewares=authelia@docker
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true

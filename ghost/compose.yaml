@@ -1,0 +1,41 @@
+---
+services:
+  ghost:
+    image: docker.io/library/ghost:latest
+    container_name: ghost
+    hostname: ghost
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - ${GHOST_PORT}:2368/tcp
+    volumes:
+      - $HOME/containers/storage/ghost/config/config.production.json:/var/lib/ghost/config.production.json:ro,Z
+      - $HOME/containers/storage/ghost/config:/var/lib/ghost/content:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.ghost.entrypoints=http
+      - traefik.http.routers.ghost.rule=Host(`blog.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.ghost-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.ghost.middlewares=ghost-https-redirect
+      - traefik.http.routers.ghost-secure.entrypoints=https
+      - traefik.http.routers.ghost-secure.rule=Host(`blog.${HOST_DOMAIN}`)
+      - traefik.http.routers.ghost-secure.tls=true
+      - traefik.http.routers.ghost-secure.service=ghost
+      - traefik.http.services.ghost.loadbalancer.server.port=2368
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true

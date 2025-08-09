@@ -1,0 +1,42 @@
+---
+services:
+  audiobookshelf:
+    image: docker.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    hostname: audiobookshelf
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - PORT=${AUDIOBOOKSHELF_PORT}
+    user: ${UID}:${GID}
+    ports:
+      - ${AUDIOBOOKSHELF_PORT}:13378/tcp
+    volumes:
+      - $HOME/containers/storage/audiobookshelf/config:/config:rw,Z
+      - $HOME/containers/storage/audiobookshelf/metadata:/metadata:rw,Z
+      - /mnt/hdd/audiobooks:/audiobooks:ro,z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.audiobookshelf.entrypoints=http
+      - traefik.http.routers.audiobookshelf.rule=Host(`audiobookshelf.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.audiobookshelf-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.audiobookshelf.middlewares=audiobookshelf-https-redirect
+      - traefik.http.routers.audiobookshelf-secure.entrypoints=https
+      - traefik.http.routers.audiobookshelf-secure.rule=Host(`audiobookshelf.${HOST_DOMAIN}`)
+      - traefik.http.routers.audiobookshelf-secure.tls=true
+      - traefik.http.routers.audiobookshelf-secure.service=audiobookshelf
+      - traefik.http.services.audiobookshelf.loadbalancer.server.port=13378
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true

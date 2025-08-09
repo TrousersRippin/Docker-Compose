@@ -1,0 +1,44 @@
+---
+services:
+  syncthing:
+    image: docker.io/syncthing/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - ${SYNCTHING_PORT1}:8384/tcp
+      - ${SYNCTHING_PORT2}:22000/tcp
+      - ${SYNCTHING_PORT3}:22000/udp
+      - ${SYNCTHING_PORT4}:21027/udp
+    volumes:
+      - $HOME/containers/storage/syncthing:/var/syncthing:rw,Z
+      - $HOME:/var/syncthing/home:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.syncthing.entrypoints=http
+      - traefik.http.routers.syncthing.rule=Host(`syncthing.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.syncthing-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.syncthing.middlewares=syncthing-https-redirect
+      - traefik.http.routers.syncthing-secure.entrypoints=https
+      - traefik.http.routers.syncthing-secure.rule=Host(`syncthing.${HOST_DOMAIN}`)
+      - traefik.http.routers.syncthing-secure.tls=true
+      - traefik.http.routers.syncthing-secure.service=syncthing
+      - traefik.http.services.syncthing.loadbalancer.server.port=8384
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true

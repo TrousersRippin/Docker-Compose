@@ -1,0 +1,90 @@
+---
+services:
+  zigbee2mqtt:
+    image: docker.io/koenkk/zigbee2mqtt:latest
+    container_name: zigbee2mqtt
+    hostname: zigbee2mqtt
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    group_add:
+      - dialout
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - Z2M_WATCHDOG=1
+    ports:
+      - ${Z2M_PORT}:8888/tcp
+    volumes:
+      - $HOME/containers/storage/zigbee2mqtt/config:/app/data:rw,Z
+      - /run/udev:/run/udev:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+  mosquitto:
+    image: docker.io/library/eclipse-mosquitto:latest
+    container_name: mosquitto
+    hostname: mosquitto
+    restart: unless-stopped
+    network_mode: host
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+    ports:
+      - ${MOSQUITTO_PORT}:1883/tcp
+    volumes:
+      - $HOME/containers/storage/mosquitto/config:/mosquitto/config:rw,Z
+      - $HOME/containers/storage/mosquitto/data:/mosquitto/data:rw,Z
+      - $HOME/containers/storage/mosquitto/log:/mosquitto/log:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    depends_on:
+      - zigbee2mqtt
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+  home-assistant:
+    image: docker.io/homeassistant/home-assistant:latest
+    container_name: home-assistant
+    hostname: home-assistant
+    restart: unless-stopped
+    network_mode: host
+    privileged: true
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - ${HOMEASSISTANT_PORT}:8123/tcp
+    volumes:
+      - $HOME/containers/storage/home-assistant/config:/config:rw,Z
+      - /run/dbus:/run/dbus:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    depends_on:
+      - mosquitto
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.home.entrypoints=http
+      - traefik.http.routers.home.rule=Host(`home.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.home-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.home.middlewares=home-https-redirect
+      - traefik.http.routers.home-secure.entrypoints=https
+      - traefik.http.routers.home-secure.rule=Host(`home.${HOST_DOMAIN}`)
+      - traefik.http.routers.home-secure.tls=true
+      - traefik.http.routers.home-secure.service=home
+      - traefik.http.services.home.loadbalancer.server.port=8123

@@ -1,0 +1,46 @@
+---
+services:
+  pihole:
+    image: docker.io/pihole/pihole:latest
+    container_name: pihole
+    hostname: pihole
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+      - FTLCONF_webserver_api_password=${FTLCONF_webserver_api_password}
+    cap_add:
+      - NET_ADMIN
+      - NET_BIND_SERVICE
+      - NET_RAW
+      - SYS_TIME
+      - SYS_NICE
+      - CHOWN
+    ports:
+      - ${PIHOLE_PORT1}:8003/tcp
+      - ${PIHOLE_PORT2}:53/tcp
+      - ${PIHOLE_PORT3}:53/udp
+    volumes:
+      - $HOME/containers/storage/pihole/config:/etc/pihole:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.pihole.entrypoints=http
+      - traefik.http.routers.pihole.rule=Host(`pihole.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.pihole-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.pihole.middlewares=pihole-https-redirect
+      - traefik.http.routers.pihole-secure.entrypoints=https
+      - traefik.http.routers.pihole-secure.rule=Host(`pihole.${HOST_DOMAIN}`)
+      - traefik.http.routers.pihole-secure.tls=true
+      - traefik.http.routers.pihole-secure.service=pihole
+      - traefik.http.services.pihole.loadbalancer.server.port=8003
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true

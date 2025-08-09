@@ -1,0 +1,44 @@
+---
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    hostname: transmission
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - ${TRANSMISSION_PORT1}:9091/tcp
+      - ${TRANSMISSION_PORT2}:51413/tcp
+      - ${TRANSMISSION_PORT3}:51413/udp
+    volumes:
+      - $HOME/containers/storage/transmission/config:/config:rw,Z
+      - $HOME/containers/storage/transmission/config:/watch:rw,Z
+      - /mnt/ssd/torrents:/data/torrents:rw,z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.transmission.entrypoints=http
+      - traefik.http.routers.transmission.rule=Host(`transmission.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.transmission-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.transmission.middlewares=transmission-https-redirect
+      - traefik.http.routers.transmission-secure.entrypoints=https
+      - traefik.http.routers.transmission-secure.rule=Host(`transmission.${HOST_DOMAIN}`)
+      - traefik.http.routers.transmission-secure.tls=true
+      - traefik.http.routers.transmission-secure.service=transmission
+      - traefik.http.services.transmission.loadbalancer.server.port=9091
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true

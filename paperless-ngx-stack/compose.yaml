@@ -1,0 +1,77 @@
+---
+services:
+  redis:
+    image: docker.io/library/redis:latest
+    container_name: redis
+    hostname: redis
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+    ports:
+      - ${REDIS_PORT}:6379/tcp
+    volumes:
+      - paperless-data:/data:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+  paperless-ngx:
+    image: docker.io/paperlessngx/paperless-ngx:latest
+    container_name: paperless-ngx
+    hostname: paperless-ngx
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - PAPERLESS_ADMIN_USER=${PAPERLESS_ADMIN_USER}
+      - PAPERLESS_ADMIN_PASSWORD=${PAPERLESS_ADMIN_PASSWORD}
+      - PAPERLESS_ADMIN_EMAIL=${PAPERLESS_ADMIN_EMAIL}
+      - PAPERLESS_OCR_LANGUAGE=${PAPERLESS_OCR_LANGUAGE}
+      - PAPERLESS_REDIS=${PAPERLESS_REDIS}
+      - PAPERLESS_SECRET_KEY=${PAPERLESS_SECRET_KEY}
+      - PAPERLESS_TIME_ZONE=${PAPERLESS_TIME_ZONE}
+      - PAPERLESS_URL=${PAPERLESS_URL}
+    ports:
+      - ${PAPERLESS_PORT}:8000/tcp
+    volumes:
+      - $HOME/containers/storage/paperless/consume:/usr/src/paperless/consume:rw,Z
+      - $HOME/containers/storage/paperless/data:/usr/src/paperless/data:rw,Z
+      - $HOME/containers/storage/paperless/export:/usr/src/paperless/export:rw,Z
+      - $HOME/containers/storage/paperless/media:/usr/src/paperless/media:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    depends_on:
+      redis
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.paperless.entrypoints=http
+      - traefik.http.routers.paperless.rule=Host(`paperless.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.paperless-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.paperless.middlewares=paperless-https-redirect
+      - traefik.http.routers.paperless-secure.entrypoints=https
+      - traefik.http.routers.paperless-secure.rule=Host(`paperless.${HOST_DOMAIN}`)
+      - traefik.http.routers.paperless-secure.tls=true
+      - traefik.http.routers.paperless-secure.service=paperless
+      - traefik.http.services.paperless.loadbalancer.server.port=8000
+      - traefik.docker.network=proxy
+
+volumes:
+  paperless-data:
+    external: true
+
+networks:
+  proxy:
+    external: true

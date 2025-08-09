@@ -1,0 +1,39 @@
+---
+services:
+  glance:
+    image: docker.io/glanceapp/glance:latest
+    container_name: glance
+    hostname: glance
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+    ports:
+      - ${GLANCE_PORT}:8087/tcp
+    volumes:
+      - $HOME/containers/storage/glance/config:/app/config:rw,Z
+      - $HOME/containers/storage/glance/icons:/app/assets:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.glance.entrypoints=http
+      - traefik.http.routers.glance.rule=Host(`glance.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.glance-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.glance.middlewares=glance-https-redirect
+      - traefik.http.routers.glance-secure.entrypoints=https
+      - traefik.http.routers.glance-secure.rule=Host(`glance.${HOST_DOMAIN}`)
+      - traefik.http.routers.glance-secure.tls=true
+      - traefik.http.routers.glance-secure.service=glance
+      - traefik.http.services.glance.loadbalancer.server.port=8087
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true

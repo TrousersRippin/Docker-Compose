@@ -1,0 +1,38 @@
+---
+services:
+  myspeed:
+    image: docker.io/germannewsmaker/myspeed:latest
+    container_name: myspeed
+    hostname: myspeed
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+    ports:
+      - ${MYSPEED_PORT}:5216/tcp
+    volumes:
+      - $HOME/containers/storage/myspeed/config:/myspeed/data:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.myspeed.entrypoints=http
+      - traefik.http.routers.myspeed.rule=Host(`myspeed.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.myspeed-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.myspeed.middlewares=myspeed-https-redirect
+      - traefik.http.routers.myspeed-secure.entrypoints=https
+      - traefik.http.routers.myspeed-secure.rule=Host(`myspeed.${HOST_DOMAIN}`)
+      - traefik.http.routers.myspeed-secure.tls=true
+      - traefik.http.routers.myspeed-secure.service=myspeed
+      - traefik.http.services.myspeed.loadbalancer.server.port=5216
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,55 @@
+---
+services:
+  plex:
+    image: docker.io/plexinc/pms-docker:latest
+    container_name: plex
+    hostname: plex.thenoisykeyboard.com
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - PLEX_UID=${PLEX_UID}
+      - PLEX_GID=${PLEX_GID}
+      - PLEX_CLAIM=${PLEX_CLAIM}
+      - ADVERTISE_IP=${PLEX_ADVERTISE_IP}
+      - ALLOWED_NETWORKS=${PLEX_ALLOWED_NETWORKS}
+      - VERSION=${PLEX_VERSION}
+    ports:
+      - ${PLEX_PORT1}:32400/tcp
+      - ${PLEX_PORT2}:1900/udp
+      - ${PLEX_PORT3}:3005/tcp
+      - ${PLEX_PORT4}:8324/udp
+      - ${PLEX_PORT5}:32469/tcp
+      - ${PLEX_PORT6}:32410/udp
+      - ${PLEX_PORT7}:32412/udp
+      - ${PLEX_PORT8}:32413/udp
+      - ${PLEX_PORT9}:32414/udp
+    volumes:
+      - $HOME/containers/storage/plex:/config:rw,Z
+      - $HOME/containers/storage/plex:/transcode:rw,Z
+      - /mnt/hdd:/data:ro,z
+      - /mnt/ssd/media:/download:rw,z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.plex.entrypoints=http
+      - traefik.http.routers.plex.rule=Host(`plex.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.plex-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.plex.middlewares=plex-https-redirect
+      - traefik.http.routers.plex-secure.entrypoints=https
+      - traefik.http.routers.plex-secure.rule=Host(`plex.${HOST_DOMAIN}`)
+      - traefik.http.routers.plex-secure.tls=true
+      - traefik.http.routers.plex-secure.service=plex
+      - traefik.http.services.plex.loadbalancer.server.port=32400
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true

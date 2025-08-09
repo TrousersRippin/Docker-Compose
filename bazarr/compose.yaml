@@ -1,0 +1,41 @@
+---
+services:
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    hostname: bazarr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - ${BAZARR_PORT}:6767/tcp
+    volumes:
+      - $HOME/containers/storage/bazarr/config:/config:rw,Z
+      - /mnt/ssd:/data:rw,z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.bazarr.entrypoints=http
+      - traefik.http.routers.bazarr.rule=Host(`bazarr.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.bazarr-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.bazarr.middlewares=bazarr-https-redirect
+      - traefik.http.routers.bazarr-secure.entrypoints=https
+      - traefik.http.routers.bazarr-secure.rule=Host(`bazarr.${HOST_DOMAIN}`)
+      - traefik.http.routers.bazarr-secure.tls=true
+      - traefik.http.routers.bazarr-secure.service=bazarr
+      - traefik.http.services.bazarr.loadbalancer.server.port=6767
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true
