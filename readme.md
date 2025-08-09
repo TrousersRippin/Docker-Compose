@@ -8,4 +8,4 @@ Ensure you have Git & Docker installed on your system.
 
 ## Installation
 
-Pull the repo into empty folder and enjoy.
+Pull the repo into empty folder. Add you own .env files to each folder.
