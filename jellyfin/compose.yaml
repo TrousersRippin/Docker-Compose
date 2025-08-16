@@ -1,0 +1,43 @@
+---
+services:
+  jellyfin:
+    image: docker.io/jellyfin/jellyfin:latest
+    container_name: jellyfin
+    hostname: jellyfin
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+    ports:
+      - ${JELLYFIN_PORT}:8096
+    volumes:
+      - $HOME/containers/storage/jellyfin:/cache:rw,Z
+      - $HOME/containers/storage/jellyfin:/config:rw,Z
+      - /mnt/hdd:/data:ro,z
+      - /mnt/ssd/media:/download:rw,z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+      - traefik.enable=true
+      - traefik.http.routers.jellyfin.entrypoints=http
+      - traefik.http.routers.jellyfin.rule=Host(`jellyfin.${HOST_DOMAIN}`)
+      - traefik.http.middlewares.jellyfin-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.jellyfin.middlewares=jellyfin-https-redirect
+      - traefik.http.routers.jellyfin-secure.entrypoints=https
+      - traefik.http.routers.jellyfin-secure.rule=Host(`jellyfin.${HOST_DOMAIN}`)
+      - traefik.http.routers.jellyfin-secure.tls=true
+      - traefik.http.routers.jellyfin-secure.service=jellyfin
+      - traefik.http.services.jellyfin.loadbalancer.server.port=8096
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    external: true
