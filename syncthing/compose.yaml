@@ -13,9 +13,9 @@ services:
       - PGID=${PGID}
     ports:
       - ${SYNCTHING_PORT1}:8384/tcp
-      - ${SYNCTHING_PORT2}:22000/tcp
-      - ${SYNCTHING_PORT3}:22000/udp
-      - ${SYNCTHING_PORT4}:21027/udp
+      - ${SYNCTHING_PORT2}:21027/udp
+      - ${SYNCTHING_PORT3}:22000/tcp
+      - ${SYNCTHING_PORT4}:22000/udp
     volumes:
       - $HOME/containers/storage/syncthing:/var/syncthing:rw,Z
       - $HOME:/var/syncthing/home:rw,Z
