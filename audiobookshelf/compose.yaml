@@ -10,7 +10,6 @@ services:
     environment:
       - TZ=${TZ}
       - PORT=${AUDIOBOOKSHELF_PORT}
-    user: ${UID}:${GID}
     ports:
       - ${AUDIOBOOKSHELF_PORT}:13378/tcp
     volumes:
