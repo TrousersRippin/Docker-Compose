@@ -7,7 +7,7 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
       - HOST_ETC=/hostfs/etc
       - HOST_PROC=/hostfs/proc
       - HOST_SYS=/hostfs/sys
@@ -16,7 +16,7 @@ services:
       - HOST_MOUNT_PREFIX=/hostfs
     user: telegraf:995
     ports:
-      - ${TELEGRAF_PORT}:8125/tcp
+      - 8125:8125/tcp
     volumes:
       - $HOME/containers/storage/telegraf/config/telegraf.conf:/etc/telegraf/telegraf.conf:ro,Z
       - /:/hostfs:ro
@@ -38,7 +38,7 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}
       - DOCKER_INFLUXDB_INIT_BUCKET=${DOCKER_INFLUXDB_INIT_BUCKET}
       - DOCKER_INFLUXDB_INIT_MODE=${DOCKER_INFLUXDB_INIT_MODE}
@@ -47,7 +47,7 @@ services:
       - DOCKER_INFLUXDB_INIT_RETENTION=${DOCKER_INFLUXDB_INIT_RETENTION}
       - DOCKER_INFLUXDB_INIT_USERNAME=${DOCKER_INFLUXDB_INIT_USERNAME}
     ports:
-      - ${INFLUXDB_PORT}:8086/tcp
+      - 8086:8086/tcp
     volumes:
       - influxdb-data:/var/lib/influxdb2:rw,Z
       - /etc/localtime:/etc/localtime:ro

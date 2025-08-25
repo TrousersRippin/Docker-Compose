@@ -8,11 +8,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
-      - USER_UID=${USER_UID}
-      - USER_GID=${USER_GID}
+      - TZ=Europe/Stockholm
+      - USER_UID=1000
+      - USER_GID=1000
     ports:
-      - ${GITEA_PORT}:3002/tcp
+      - 3002:3002/tcp
     volumes:
       - $HOME/containers/storage/gitea/config:/data:rw,Z
       - /etc/localtime:/etc/localtime:ro
@@ -23,17 +23,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.gitea.entrypoints=http
-      - traefik.http.routers.gitea.rule=Host(`gitea.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.gitea-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.gitea.middlewares=gitea-https-redirect
-      - traefik.http.routers.gitea-secure.entrypoints=https
-      - traefik.http.routers.gitea-secure.rule=Host(`gitea.${HOST_DOMAIN}`)
-      - traefik.http.routers.gitea-secure.tls=true
-      - traefik.http.routers.gitea-secure.service=gitea
-      - traefik.http.services.gitea.loadbalancer.server.port=3002
-      - traefik.docker.network=proxy
 
 networks:
   proxy:

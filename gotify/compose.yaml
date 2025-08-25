@@ -8,14 +8,14 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
       - GOTIFY_DEFAULTUSER_NAME=${GOTIFY_DEFAULTUSER_NAME}
       - GOTIFY_DEFAULTUSER_PASS=${GOTIFY_DEFAULTUSER_PASS}
-      - GOTIFY_SERVER_PORT=${GOTIFY_SERVER_PORT}
+      - GOTIFY_SERVER_PORT=8001
     ports:
-      - ${GOTIFY_SERVER_PORT}:8001/tcp
+      - 8001:8001/tcp
     volumes:
       - $HOME/containers/storage/gotify/config:/app/data:rw,Z
       - /etc/localtime:/etc/localtime:ro
@@ -26,17 +26,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.gotify.entrypoints=http
-      - traefik.http.routers.gotify.rule=Host(`gotify.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.gotify-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.gotify.middlewares=gotify-https-redirect
-      - traefik.http.routers.gotify-secure.entrypoints=https
-      - traefik.http.routers.gotify-secure.rule=Host(`gotify.${HOST_DOMAIN}`)
-      - traefik.http.routers.gotify-secure.tls=true
-      - traefik.http.routers.gotify-secure.service=gotify
-      - traefik.http.services.gotify.loadbalancer.server.port=8001
-      - traefik.docker.network=proxy
 
 networks:
   proxy:

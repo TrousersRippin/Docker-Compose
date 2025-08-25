@@ -8,11 +8,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
     healthcheck:
       disable: true
     ports:
-      - ${AUTHELIA_PORT}:9094/tcp
+      - 9094:9094/tcp
     volumes:
       - $HOME/containers/storage/authelia/config:/config:rw,Z
       - /etc/localtime:/etc/localtime:ro
@@ -23,18 +23,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.authelia.entrypoints=https
-      - traefik.http.routers.authelia.rule=Host(`authelia.${HOST_DOMAIN}`)
-      - traefik.http.routers.authelia.tls=true
-      - traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9094/api/verify?rd=https://authelia.${HOST_DOMAIN}
-      - traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true
-      - traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email
-      - traefik.http.middlewares.authelia-basic.forwardAuth.address=http://authelia:9094/api/verify?auth=basic
-      - traefik.http.middlewares.authelia-basic.forwardAuth.trustForwardHeader=true
-      - traefik.http.middlewares.authelia-basic.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email
-      - traefik.http.services.authelia.loadbalancer.server.port=9094
-      - traefik.docker.network=proxy
 
 networks:
   proxy:

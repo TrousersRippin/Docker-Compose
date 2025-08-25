@@ -8,10 +8,10 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
-      - EULA=${EULA}
+      - TZ=Europe/Stockholm
+      - EULA=TRUE
     ports:
-      - ${MINECRAFT_PORT}:19132/tcp
+      - 19132:19132/tcp
     stdin_open: true
     tty: true
     volumes:

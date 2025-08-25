@@ -8,11 +8,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
-      - ${SONARR_PORT}:8989/tcp
+      - 8989:8989/tcp
     volumes:
       - $HOME/containers/storage/sonarr/config:/config:rw,Z
       - /mnt/ssd:/data:rw,z
@@ -24,17 +24,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.sonarr.entrypoints=http
-      - traefik.http.routers.sonarr.rule=Host(`sonarr.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.sonarr-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.sonarr.middlewares=sonarr-https-redirect
-      - traefik.http.routers.sonarr-secure.entrypoints=https
-      - traefik.http.routers.sonarr-secure.rule=Host(`sonarr.${HOST_DOMAIN}`)
-      - traefik.http.routers.sonarr-secure.tls=true
-      - traefik.http.routers.sonarr-secure.service=sonarr
-      - traefik.http.services.sonarr.loadbalancer.server.port=8989
-      - traefik.docker.network=proxy
 
 networks:
   proxy:

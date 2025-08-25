@@ -8,11 +8,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
     command:
       - --config.file=/etc/promtail/promtail.yaml
     ports:
-      - ${PROMTAIL_PORT}:1514/tcp
+      - 1514:1514/tcp
     volumes:
       - $HOME/containers/storage/promtail/config/promtail.yaml:/etc/promtail/promtail.yaml:ro,Z
       - /var/lib/docker/containers:/var/lib/docker/containers:ro,z
@@ -35,11 +35,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
     command:
       - --config.file=/etc/loki/loki.yaml
     ports:
-      - ${LOKI_PORT}:3100/tcp
+      - 3100:3100/tcp
     volumes:
       - $HOME/containers/storage/loki/config/loki.yaml:/etc/loki/loki.yaml:ro,Z
       - /etc/localtime:/etc/localtime:ro
@@ -61,9 +61,9 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
     ports:
-      - ${GRAFANA_PORT}:3333/tcp
+      - 3333:3333/tcp
     volumes:
       - $HOME/containers/storage/grafana/config/grafana.ini:/etc/grafana/grafana.ini:rw,Z
       - $HOME/containers/storage/grafana/dashboards:/etc/grafana/dashboards:ro,Z
@@ -79,17 +79,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.grafana.entrypoints=http
-      - traefik.http.routers.grafana.rule=Host(`grafana.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.grafana-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.grafana.middlewares=grafana-https-redirect
-      - traefik.http.routers.grafana-secure.entrypoints=https
-      - traefik.http.routers.grafana-secure.rule=Host(`grafana.${HOST_DOMAIN}`)
-      - traefik.http.routers.grafana-secure.tls=true
-      - traefik.http.routers.grafana-secure.service=grafana
-      - traefik.http.services.grafana.loadbalancer.server.port=3333
-      - traefik.docker.network=proxy
 
 volumes:
   grafana-data:

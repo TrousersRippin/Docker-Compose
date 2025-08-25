@@ -8,11 +8,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
-      - ${PROWLARR_PORT}:9696/tcp
+      - 9696:9696/tcp
     volumes:
       - $HOME/containers/storage/prowlarr/config:/config:rw,Z
       - /etc/localtime:/etc/localtime:ro
@@ -23,17 +23,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.prowlarr.entrypoints=http
-      - traefik.http.routers.prowlarr.rule=Host(`prowlarr.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.prowlarr-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.prowlarr.middlewares=prowlarr-https-redirect
-      - traefik.http.routers.prowlarr-secure.entrypoints=https
-      - traefik.http.routers.prowlarr-secure.rule=Host(`prowlarr.${HOST_DOMAIN}`)
-      - traefik.http.routers.prowlarr-secure.tls=true
-      - traefik.http.routers.prowlarr-secure.service=prowlarr
-      - traefik.http.services.prowlarr.loadbalancer.server.port=9696
-      - traefik.docker.network=proxy
 
 networks:
   proxy:

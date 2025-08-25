@@ -8,11 +8,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
     command:
       - --config.file=/etc/alertmanager/alertmanager.yaml
     ports:
-      - ${ALERTMANAGER_PORT}:9093/tcp
+      - 9093:9093/tcp
     volumes:
       - $HOME/containers/storage/alertmanager/config/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml:ro,Z
       - alertmanager-data:/alertmanager:rw
@@ -33,11 +33,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
     command:
       - --path.rootfs=/host
     ports:
-      - ${NODEEXPORTER_PORT}:9100/tcp
+      - 9100:9100/tcp
     pid: host
     volumes:
       - /:/host:ro,rslave
@@ -58,13 +58,13 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
     command:
       - --config.file=/etc/prometheus/prometheus.yaml
       - --web.listen-address=0.0.0.0:9092
       - --web.enable-lifecycle
     ports:
-      - ${PROMETHEUS_PORT}:9092/tcp
+      - 9092:9092/tcp
     volumes:
       - $HOME/containers/storage/prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro,Z
       - $HOME/containers/storage/prometheus/config/alerts.yaml:/etc/prometheus/alerts.yaml:ro,Z
@@ -79,16 +79,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.prometheus.entrypoints=http
-      - traefik.http.routers.prometheus.rule=Host(`prometheus.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.prometheus-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.prometheus.middlewares=prometheus-https-redirect
-      - traefik.http.routers.prometheus-secure.entrypoints=https
-      - traefik.http.routers.prometheus-secure.rule=Host(`prometheus.${HOST_DOMAIN}`)
-      - traefik.http.routers.prometheus-secure.tls=true
-      - traefik.http.routers.prometheus-secure.service=prometheus
-      - traefik.http.services.prometheus.loadbalancer.server.port=9092
 
 volumes:
   alertmanager-data:

@@ -8,13 +8,13 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
-      - ${TRANSMISSION_PORT1}:9091/tcp
-      - ${TRANSMISSION_PORT2}:51413/tcp
-      - ${TRANSMISSION_PORT3}:51413/udp
+      - 9091:9091/tcp
+      - 51413:51413/tcp
+      - 51413:51413/udp
     volumes:
       - $HOME/containers/storage/transmission/config:/config:rw,Z
       - $HOME/containers/storage/transmission/config:/watch:rw,Z
@@ -27,17 +27,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.transmission.entrypoints=http
-      - traefik.http.routers.transmission.rule=Host(`transmission.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.transmission-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.transmission.middlewares=transmission-https-redirect
-      - traefik.http.routers.transmission-secure.entrypoints=https
-      - traefik.http.routers.transmission-secure.rule=Host(`transmission.${HOST_DOMAIN}`)
-      - traefik.http.routers.transmission-secure.tls=true
-      - traefik.http.routers.transmission-secure.service=transmission
-      - traefik.http.services.transmission.loadbalancer.server.port=9091
-      - traefik.docker.network=proxy
 
 networks:
   proxy:

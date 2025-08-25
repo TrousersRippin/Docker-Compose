@@ -8,11 +8,10 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
       - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS}
-      - HOMEPAGE_VAR_LOG_TARGETS=${HOMEPAGE_VAR_LOG_TARGETS}
     ports:
-      - ${HOMEPAGE_PORT}:3000/tcp
+      - 3000:3000/tcp
     volumes:
       - $HOME/containers/storage/homepage/config:/config:rw,Z
       - $HOME/containers/storage/homepage/icons:/app/public/icons:rw,z
@@ -27,17 +26,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.homepage.entrypoints=http
-      - traefik.http.routers.homepage.rule=Host(`homepage.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.homepage-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.homepage.middlewares=homepage-https-redirect
-      - traefik.http.routers.homepage-secure.entrypoints=https
-      - traefik.http.routers.homepage-secure.rule=Host(`homepage.${HOST_DOMAIN}`)
-      - traefik.http.routers.homepage-secure.tls=true
-      - traefik.http.routers.homepage-secure.service=homepage
-      - traefik.http.services.homepage.loadbalancer.server.port=3000
-      - traefik.docker.network=proxy
 
 networks:
   proxy:

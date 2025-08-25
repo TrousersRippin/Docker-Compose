@@ -8,13 +8,13 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
       - CF_API_EMAIL=${CF_API_EMAIL}
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     ports:
-      - ${TRAEFIK_PORT1}:8080/tcp
-      - ${TRAEFIK_PORT2}:80/tcp
-      - ${TRAEFIK_PORT3}:443/tcp
+      - 8080:8080/tcp
+      - 80:80/tcp
+      - 443:443/tcp
     volumes:
       - $HOME/containers/storage/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro,Z
       - $HOME/containers/storage/traefik/config/dynamic.yml:/etc/traefik/dynamic.yml:rw,Z
@@ -29,22 +29,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.traefik.entrypoints=http
-      - traefik.http.routers.traefik.rule=Host(`traefik.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.traefik-auth.basicauth.users=
-      - traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https
-      - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
-      - traefik.http.routers.traefik.middlewares=traefik-https-redirect
-      - traefik.http.routers.traefik-secure.entrypoints=https
-      - traefik.http.routers.traefik-secure.rule=Host(`traefik.${HOST_DOMAIN}`)
-      - traefik.http.routers.traefik-secure.middlewares=traefik-auth
-      - traefik.http.routers.traefik-secure.tls=true
-      - traefik.http.routers.traefik-secure.tls.certresolver=cloudflare
-      - traefik.http.routers.traefik-secure.tls.domains[0].main=${HOST_DOMAIN}
-      - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.${HOST_DOMAIN}
-      - traefik.http.routers.traefik-secure.service=api@internal
-      - traefik.http.routers.api.middlewares=authelia@docker
 
 networks:
   proxy:

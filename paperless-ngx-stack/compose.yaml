@@ -8,9 +8,9 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
     ports:
-      - ${REDIS_PORT}:6379/tcp
+      - 6379:6379/tcp
     volumes:
       - paperless-data:/data:rw,Z
       - /etc/localtime:/etc/localtime:ro
@@ -30,17 +30,18 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
       - PAPERLESS_ADMIN_USER=${PAPERLESS_ADMIN_USER}
       - PAPERLESS_ADMIN_PASSWORD=${PAPERLESS_ADMIN_PASSWORD}
       - PAPERLESS_ADMIN_EMAIL=${PAPERLESS_ADMIN_EMAIL}
       - PAPERLESS_OCR_LANGUAGE=${PAPERLESS_OCR_LANGUAGE}
+      - PAPERLESS_PORT=${PAPERLESS_PORT}
       - PAPERLESS_REDIS=${PAPERLESS_REDIS}
       - PAPERLESS_SECRET_KEY=${PAPERLESS_SECRET_KEY}
       - PAPERLESS_TIME_ZONE=${PAPERLESS_TIME_ZONE}
       - PAPERLESS_URL=${PAPERLESS_URL}
     ports:
-      - ${PAPERLESS_PORT}:8000/tcp
+      - 8282:8282/tcp
     volumes:
       - $HOME/containers/storage/paperless/consume:/usr/src/paperless/consume:rw,Z
       - $HOME/containers/storage/paperless/data:/usr/src/paperless/data:rw,Z
@@ -56,17 +57,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.paperless.entrypoints=http
-      - traefik.http.routers.paperless.rule=Host(`paperless.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.paperless-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.paperless.middlewares=paperless-https-redirect
-      - traefik.http.routers.paperless-secure.entrypoints=https
-      - traefik.http.routers.paperless-secure.rule=Host(`paperless.${HOST_DOMAIN}`)
-      - traefik.http.routers.paperless-secure.tls=true
-      - traefik.http.routers.paperless-secure.service=paperless
-      - traefik.http.services.paperless.loadbalancer.server.port=8000
-      - traefik.docker.network=proxy
 
 volumes:
   paperless-data:

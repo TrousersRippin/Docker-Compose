@@ -8,15 +8,15 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
-      - DOZZLE_ADDR=${DOZZLE_ADDR}
-      - DOZZLE_AUTH_PROVIDER=${DOZZLE_AUTH_PROVIDER}
-      - DOZZLE_AUTH_TTL=${DOZZLE_AUTH_TTL}
-      - DOZZLE_ENABLE_ACTIONS=${DOZZLE_ENABLE_ACTIONS}
-      - DOZZLE_HOSTNAME=${DOZZLE_HOSTNAME}
-      - DOZZLE_NO_ANALYTICS=${DOZZLE_NO_ANALYTICS}
+      - TZ=Europe/Stockholm
+      - DOZZLE_ADDR=:8008
+      - DOZZLE_AUTH_PROVIDER=simple
+      - DOZZLE_AUTH_TTL=24h
+      - DOZZLE_ENABLE_ACTIONS=true
+      - DOZZLE_HOSTNAME=zimacube
+      - DOZZLE_NO_ANALYTICS=true
     ports:
-      - ${DOZZLE_PORT}:8008/tcp
+      - 8008:8008/tcp
     volumes:
       - $HOME/containers/storage/dozzle/config:/data:rw,Z
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -28,17 +28,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.dozzle.entrypoints=http
-      - traefik.http.routers.dozzle.rule=Host(`dozzle.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.dozzle-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.dozzle.middlewares=dozzle-https-redirect
-      - traefik.http.routers.dozzle-secure.entrypoints=https
-      - traefik.http.routers.dozzle-secure.rule=Host(`dozzle.${HOST_DOMAIN}`)
-      - traefik.http.routers.dozzle-secure.tls=true
-      - traefik.http.routers.dozzle-secure.service=dozzle
-      - traefik.http.services.dozzle.loadbalancer.server.port=8008
-      - traefik.docker.network=proxy
 
 networks:
   proxy:

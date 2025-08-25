@@ -8,9 +8,9 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
       - MARIADB_AUTO_UPGRADE=${MARIADB_AUTO_UPGRADE}
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - MARIADB_INITDB_SKIP_TZINFO=${MARIADB_INITDB_SKIP_TZINFO}
@@ -24,7 +24,7 @@ services:
       timeout: 10s
       retries: 5
     ports:
-      - ${MARIADB_PORT}:3306/tcp
+      - 3306:3306/tcp
     volumes:
       - photoprism-data:/var/lib/mysql:rw,Z
       - /etc/localtime:/etc/localtime:ro
@@ -44,11 +44,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
+      - TZ=Europe/Stockholm
       - PMA_HOST=${PMA_HOST}
       - PMA_PORT=${PMA_PORT}
     ports:
-      - ${PHPMYADMIN_PORT}:80/tcp
+      - 8765:80/tcp
     volumes:
       - $HOME/containers/storage/phpmyadmin/apache2.conf:/etc/apache2/apache2.conf:ro,Z
       - $HOME/containers/storage/phpmyadmin/sessions:/sessions:rw,Z
@@ -63,17 +63,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.phpmyadmin.entrypoints=http
-      - traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.phpmyadmin-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.phpmyadmin.middlewares=phpmyadmin-https-redirect
-      - traefik.http.routers.phpmyadmin-secure.entrypoints=https
-      - traefik.http.routers.phpmyadmin-secure.rule=Host(`phpmyadmin.${HOST_DOMAIN}`)
-      - traefik.http.routers.phpmyadmin-secure.tls=true
-      - traefik.http.routers.phpmyadmin-secure.service=phpmyadmin
-      - traefik.http.services.phpmyadmin.loadbalancer.server.port=80
-      - traefik.docker.network=proxy
 
   photoprism:
     image: docker.io/photoprism/photoprism:latest
@@ -83,9 +72,9 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
       - PHOTOPRISM_ADMIN_PASSWORD=${PHOTOPRISM_ADMIN_PASSWORD}
       - PHOTOPRISM_ADMIN_USER=${PHOTOPRISM_ADMIN_USER}
       - PHOTOPRISM_DATABASE_DRIVER=${PHOTOPRISM_DATABASE_DRIVER}
@@ -95,6 +84,7 @@ services:
       - PHOTOPRISM_DATABASE_USER=${PHOTOPRISM_DATABASE_USER}
       - PHOTOPRISM_HTTP_PORT=${PHOTOPRISM_HTTP_PORT}
       - PHOTOPRISM_JPEG_SIZE=${PHOTOPRISM_JPEG_SIZE}
+      - PHOTOPRISM_PASSWORD=${PHOTOPRISM_PASSWORD}
       - PHOTOPRISM_PNG_SIZE=${PHOTOPRISM_PNG_SIZE}
       - PHOTOPRISM_SITE_TITLE=${PHOTOPRISM_SITE_TITLE}
       - PHOTOPRISM_SITE_URL=${PHOTOPRISM_SITE_URL}
@@ -102,8 +92,9 @@ services:
       - PHOTOPRISM_THUMB_SIZE=${PHOTOPRISM_THUMB_SIZE}
       - PHOTOPRISM_THUMB_SIZE_UNCACHED=${PHOTOPRISM_THUMB_SIZE_UNCACHED}
       - PHOTOPRISM_THUMB_UNCACHED=${PHOTOPRISM_THUMB_UNCACHED}
+      - PHOTOPRISM_USERNAME=${PHOTOPRISM_USERNAME}
     ports:
-      - ${PHOTOPRISM_PORT}:2342/tcp
+      - 2342:2342/tcp
     volumes:
       - $HOME/containers/storage/photoprism:/photoprism/storage:rw,Z
       - /mnt/hdd/photos:/photoprism/originals:ro,z
@@ -118,17 +109,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.photoprism.entrypoints=http
-      - traefik.http.routers.photoprism.rule=Host(`photoprism.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.photoprism-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.photoprism.middlewares=photoprism-https-redirect
-      - traefik.http.routers.photoprism-secure.entrypoints=https
-      - traefik.http.routers.photoprism-secure.rule=Host(`photoprism.${HOST_DOMAIN}`)
-      - traefik.http.routers.photoprism-secure.tls=true
-      - traefik.http.routers.photoprism-secure.service=photoprism
-      - traefik.http.services.photoprism.loadbalancer.server.port=2342
-      - traefik.docker.network=proxy
 
 volumes:
   photoprism-data:

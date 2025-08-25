@@ -8,11 +8,11 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=${TZ}
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
-      - ${KAVITA_PORT}:5000/tcp
+      - 5000:5000/tcp
     volumes:
       - $HOME/containers/storage/kavita/config:/kavita/config:rw,Z
       - /mnt/hdd/books:/books:ro,z
@@ -24,17 +24,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-      - traefik.enable=true
-      - traefik.http.routers.kavita.entrypoints=http
-      - traefik.http.routers.kavita.rule=Host(`kavita.${HOST_DOMAIN}`)
-      - traefik.http.middlewares.kavita-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.kavita.middlewares=kavita-https-redirect
-      - traefik.http.routers.kavita-secure.entrypoints=https
-      - traefik.http.routers.kavita-secure.rule=Host(`kavita.${HOST_DOMAIN}`)
-      - traefik.http.routers.kavita-secure.tls=true
-      - traefik.http.routers.kavita-secure.service=kavita
-      - traefik.http.services.kavita.loadbalancer.server.port=5000
-      - traefik.docker.network=proxy
 
 networks:
   proxy:
