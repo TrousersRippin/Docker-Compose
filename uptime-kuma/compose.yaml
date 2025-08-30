@@ -1,0 +1,28 @@
+---
+services:
+  uptime-kuma:
+    image: docker.io/louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    hostname: uptime-kuma
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - 3001:3001/tcp
+    volumes:
+      - $HOME/containers/storage/uptime-kuma/config:/app/data:rw,Z
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  proxy:
+    external: true

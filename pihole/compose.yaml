@@ -1,0 +1,35 @@
+---
+services:
+  pihole:
+    image: docker.io/pihole/pihole:latest
+    container_name: pihole
+    hostname: pihole
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Stockholm
+      - FTLCONF_webserver_api_password=${FTLCONF_webserver_api_password}
+    cap_add:
+      - NET_ADMIN
+      - NET_BIND_SERVICE
+      - NET_RAW
+      - SYS_TIME
+      - SYS_NICE
+      - CHOWN
+    ports:
+      - 8003:8003/tcp
+      - 53:53/tcp
+      - 53:53/udp
+    volumes:
+      - $HOME/containers/storage/pihole/config:/etc/pihole:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  proxy:
+    external: true

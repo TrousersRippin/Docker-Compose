@@ -1,0 +1,32 @@
+---
+services:
+  gotify:
+    image: docker.io/gotify/server:latest
+    container_name: gotify
+    hostname: gotify
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+      - GOTIFY_DEFAULTUSER_NAME=${GOTIFY_DEFAULTUSER_NAME}
+      - GOTIFY_DEFAULTUSER_PASS=${GOTIFY_DEFAULTUSER_PASS}
+      - GOTIFY_SERVER_PORT=8001
+    ports:
+      - 8001:8001/tcp
+    volumes:
+      - $HOME/containers/storage/gotify/config:/app/data:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  proxy:
+    external: true

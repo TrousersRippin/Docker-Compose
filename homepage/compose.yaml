@@ -1,0 +1,32 @@
+---
+services:
+  homepage:
+    image: docker.io/gethomepage/homepage:latest
+    container_name: homepage
+    hostname: homepage
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS}
+    ports:
+      - 3000:3000/tcp
+    volumes:
+      - $HOME/containers/storage/homepage/config:/config:rw,Z
+      - $HOME/containers/storage/homepage/icons:/app/public/icons:rw,z
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /mnt/hdd:/mnt/hdd:ro
+      - /mnt/ssd:/mnt/ssd:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  proxy:
+    external: true

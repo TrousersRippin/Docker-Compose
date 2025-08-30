@@ -1,0 +1,91 @@
+---
+services:
+  alertmanager:
+    image: docker.io/prom/alertmanager:latest
+    container_name: alertmanager
+    hostname: alertmanager
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yaml
+    ports:
+      - 9093:9093/tcp
+    volumes:
+      - $HOME/containers/storage/alertmanager/config/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml:ro,Z
+      - alertmanager-data:/alertmanager:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+  node-exporter:
+    image: docker.io/prom/node-exporter:latest
+    container_name: node-exporter
+    hostname: node-exporter
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    command:
+      - --path.rootfs=/host
+    ports:
+      - 9100:9100/tcp
+    pid: host
+    volumes:
+      - /:/host:ro,rslave
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+  prometheus:
+    image: docker.io/prom/prometheus:latest
+    container_name: prometheus
+    hostname: prometheus
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
+      - --web.listen-address=0.0.0.0:9092
+      - --web.enable-lifecycle
+    ports:
+      - 9092:9092/tcp
+    volumes:
+      - $HOME/containers/storage/prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro,Z
+      - $HOME/containers/storage/prometheus/config/alerts.yaml:/etc/prometheus/alerts.yaml:ro,Z
+      - prometheus-data:/prometheus:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    depends_on:
+      - node-exporter
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+volumes:
+  alertmanager-data:
+    name: alertmanager-data
+  prometheus-data:
+    name: prometheus-data
+
+networks:
+  proxy:
+    external: true

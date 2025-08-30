@@ -1,0 +1,35 @@
+---
+services:
+  traefik:
+    image: docker.io/library/traefik:latest
+    container_name: traefik
+    hostname: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+    ports:
+      - 8080:8080/tcp
+      - 80:80/tcp
+      - 443:443/tcp
+    volumes:
+      - $HOME/containers/storage/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro,Z
+      - $HOME/containers/storage/traefik/config/dynamic.yml:/etc/traefik/dynamic.yml:rw,Z
+      - $HOME/containers/storage/traefik/config/log:/var/log/traefik:rw,z
+      - $HOME/containers/storage/traefik/data:/etc/traefik/data:rw,Z
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  proxy:
+    external: true

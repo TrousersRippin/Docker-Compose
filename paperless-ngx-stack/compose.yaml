@@ -1,0 +1,67 @@
+---
+services:
+  redis:
+    image: docker.io/library/redis:latest
+    container_name: redis
+    hostname: redis
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - 6379:6379/tcp
+    volumes:
+      - paperless-data:/data:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+  paperless-ngx:
+    image: docker.io/paperlessngx/paperless-ngx:latest
+    container_name: paperless-ngx
+    hostname: paperless-ngx
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PAPERLESS_ADMIN_USER=${PAPERLESS_ADMIN_USER}
+      - PAPERLESS_ADMIN_PASSWORD=${PAPERLESS_ADMIN_PASSWORD}
+      - PAPERLESS_ADMIN_EMAIL=${PAPERLESS_ADMIN_EMAIL}
+      - PAPERLESS_OCR_LANGUAGE=${PAPERLESS_OCR_LANGUAGE}
+      - PAPERLESS_PORT=${PAPERLESS_PORT}
+      - PAPERLESS_REDIS=${PAPERLESS_REDIS}
+      - PAPERLESS_SECRET_KEY=${PAPERLESS_SECRET_KEY}
+      - PAPERLESS_TIME_ZONE=${PAPERLESS_TIME_ZONE}
+      - PAPERLESS_URL=${PAPERLESS_URL}
+    ports:
+      - 8282:8282/tcp
+    volumes:
+      - $HOME/containers/storage/paperless/consume:/usr/src/paperless/consume:rw,Z
+      - $HOME/containers/storage/paperless/data:/usr/src/paperless/data:rw,Z
+      - $HOME/containers/storage/paperless/export:/usr/src/paperless/export:rw,Z
+      - $HOME/containers/storage/paperless/media:/usr/src/paperless/media:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    depends_on:
+      redis
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+volumes:
+  paperless-data:
+    external: true
+
+networks:
+  proxy:
+    external: true
