@@ -1,0 +1,119 @@
+---
+services:
+  mariadb:
+    image: docker.io/library/mariadb:latest
+    container_name: mariadb
+    hostname: mariadb
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+      - MARIADB_AUTO_UPGRADE=${MARIADB_AUTO_UPGRADE}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_INITDB_SKIP_TZINFO=${MARIADB_INITDB_SKIP_TZINFO}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_USER=${MARIADB_USER}
+    healthcheck:
+      test: "healthcheck.sh --connect"
+      start_period: 30s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    ports:
+      - 3306:3306/tcp
+    volumes:
+      - photoprism-data:/var/lib/mysql:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+  phpmyadmin:
+    image: docker.io/phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    hostname: phpmyadmin
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PMA_HOST=${PMA_HOST}
+      - PMA_PORT=${PMA_PORT}
+    ports:
+      - 8765:80/tcp
+    volumes:
+      - $HOME/containers/storage/phpmyadmin/apache2.conf:/etc/apache2/apache2.conf:ro,Z
+      - $HOME/containers/storage/phpmyadmin/sessions:/sessions:rw,Z
+      - $HOME/containers/storage/phpmyadmin/themes/boodark-nord:/var/www/html/themes/boodark-nord:ro,Z
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+  photoprism:
+    image: docker.io/photoprism/photoprism:latest
+    container_name: photoprism
+    hostname: photoprism
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+      - PHOTOPRISM_ADMIN_PASSWORD=${PHOTOPRISM_ADMIN_PASSWORD}
+      - PHOTOPRISM_ADMIN_USER=${PHOTOPRISM_ADMIN_USER}
+      - PHOTOPRISM_DATABASE_DRIVER=${PHOTOPRISM_DATABASE_DRIVER}
+      - PHOTOPRISM_DATABASE_NAME=${PHOTOPRISM_DATABASE_NAME}
+      - PHOTOPRISM_DATABASE_PASSWORD=${PHOTOPRISM_DATABASE_PASSWORD}
+      - PHOTOPRISM_DATABASE_SERVER=${PHOTOPRISM_DATABASE_SERVER}
+      - PHOTOPRISM_DATABASE_USER=${PHOTOPRISM_DATABASE_USER}
+      - PHOTOPRISM_HTTP_PORT=${PHOTOPRISM_HTTP_PORT}
+      - PHOTOPRISM_JPEG_SIZE=${PHOTOPRISM_JPEG_SIZE}
+      - PHOTOPRISM_PASSWORD=${PHOTOPRISM_PASSWORD}
+      - PHOTOPRISM_PNG_SIZE=${PHOTOPRISM_PNG_SIZE}
+      - PHOTOPRISM_SITE_TITLE=${PHOTOPRISM_SITE_TITLE}
+      - PHOTOPRISM_SITE_URL=${PHOTOPRISM_SITE_URL}
+      - PHOTOPRISM_THUMB_FILTER=${PHOTOPRISM_THUMB_FILTER}
+      - PHOTOPRISM_THUMB_SIZE=${PHOTOPRISM_THUMB_SIZE}
+      - PHOTOPRISM_THUMB_SIZE_UNCACHED=${PHOTOPRISM_THUMB_SIZE_UNCACHED}
+      - PHOTOPRISM_THUMB_UNCACHED=${PHOTOPRISM_THUMB_UNCACHED}
+      - PHOTOPRISM_USERNAME=${PHOTOPRISM_USERNAME}
+    ports:
+      - 2342:2342/tcp
+    volumes:
+      - $HOME/containers/storage/photoprism:/photoprism/storage:rw,Z
+      - /mnt/hdd/photos:/photoprism/originals:ro,z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+volumes:
+  photoprism-data:
+    external: true
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,31 @@
+---
+services:
+  authelia:
+    image: docker.io/authelia/authelia:latest
+    container_name: authelia
+    hostname: authelia
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE=/run/secrets/jwt_secret
+    healthcheck:
+      disable: true
+    ports:
+      - 9094:9094/tcp
+    volumes:
+      - $HOME/containers/storage/authelia/config:/config:rw,Z
+      - $HOME/containers/storage/authelia/secrets:/run/secrets:ro,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  proxy:
+    external: true

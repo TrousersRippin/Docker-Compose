@@ -1,0 +1,30 @@
+---
+services:
+  audiobookshelf:
+    image: docker.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    hostname: audiobookshelf
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PORT=13378
+    ports:
+      - 13378:13378/tcp
+    volumes:
+      - $HOME/containers/storage/audiobookshelf/config:/config:rw,Z
+      - $HOME/containers/storage/audiobookshelf/metadata:/metadata:rw,Z
+      - /mnt/hdd/audiobooks:/audiobooks:ro,z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  proxy:
+    external: true

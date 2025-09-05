@@ -1,0 +1,27 @@
+---
+services:
+  memos:
+    image: docker.io/neosmemo/memos:stable
+    container_name: memos
+    hostname: memos
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - 5230:5230/tcp
+    volumes:
+      - $HOME/containers/storage/memos/config:/var/opt/memos:rw,Z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  proxy:
+    external: true

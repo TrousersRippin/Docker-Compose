@@ -1,0 +1,31 @@
+---
+services:
+  jellyfin:
+    image: docker.io/jellyfin/jellyfin:latest
+    container_name: jellyfin
+    hostname: jellyfin
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - 8096:8096/tcp
+    user: 1000:1000
+    volumes:
+      - $HOME/containers/storage/jellyfin:/cache:rw,Z
+      - $HOME/containers/storage/jellyfin:/config:rw,Z
+      - /mnt/hdd:/data:ro,z
+      - /mnt/ssd/media:/download:rw,z
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - logging=promtail
+      - logging_jobname=containerlogs
+
+networks:
+  proxy:
+    external: true
