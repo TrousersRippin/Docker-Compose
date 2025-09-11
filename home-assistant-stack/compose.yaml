@@ -11,7 +11,7 @@ services:
     environment:
       - TZ=Europe/Stockholm
     ports:
-      - 8883:8883/tcp
+      - 1883:1883/tcp
     volumes:
       - $HOME/containers/storage/mosquitto/config:/mosquitto/config:rw,Z
       - $HOME/containers/storage/mosquitto/config/log:/mosquitto/log:rw,Z

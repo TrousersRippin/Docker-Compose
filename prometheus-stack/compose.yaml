@@ -61,10 +61,9 @@ services:
       - TZ=Europe/Stockholm
     command:
       - --config.file=/etc/prometheus/prometheus.yaml
-      - --web.listen-address=0.0.0.0:9092
       - --web.enable-lifecycle
     ports:
-      - 9092:9092/tcp
+      - 9090:9090/tcp
     volumes:
       - $HOME/containers/storage/prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro,Z
       - $HOME/containers/storage/prometheus/config/alerts.yaml:/etc/prometheus/alerts.yaml:ro,Z
