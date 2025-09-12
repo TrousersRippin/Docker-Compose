@@ -41,7 +41,7 @@ services:
       - PAPERLESS_TIME_ZONE=${PAPERLESS_TIME_ZONE}
       - PAPERLESS_URL=${PAPERLESS_URL}
     ports:
-      - 8282:8282/tcp
+      - 8000:8000/tcp
     volumes:
       - $HOME/containers/storage/paperless/consume:/usr/src/paperless/consume:rw,Z
       - $HOME/containers/storage/paperless/data:/usr/src/paperless/data:rw,Z
