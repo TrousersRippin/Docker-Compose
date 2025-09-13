@@ -68,7 +68,7 @@ services:
       - $HOME/containers/storage/grafana/config/grafana.ini:/etc/grafana/grafana.ini:rw,Z
       - $HOME/containers/storage/grafana/dashboards:/etc/grafana/dashboards:ro,Z
       - $HOME/containers/storage/grafana/provisioning:/etc/grafana/provisioning:ro,Z
-      - grafana-data:/var/lib/grafana:rw,Z
+      - $HOME/containers/storage/grafana/data:/var/lib/grafana:rw,Z
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     depends_on:
@@ -79,10 +79,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-
-volumes:
-  grafana-data:
-    name: grafana-data
 
 networks:
   proxy:

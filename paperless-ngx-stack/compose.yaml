@@ -12,7 +12,7 @@ services:
     ports:
       - 6379:6379/tcp
     volumes:
-      - paperless-data:/data:rw,Z
+      - $HOME/containers/storage/redis/data:/data:rw,Z
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
@@ -57,10 +57,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-
-volumes:
-  paperless-data:
-    external: true
 
 networks:
   proxy:
