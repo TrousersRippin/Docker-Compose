@@ -1,22 +1,21 @@
 ---
 services:
-  jellyfin:
-    image: docker.io/jellyfin/jellyfin:latest
-    container_name: jellyfin
-    hostname: jellyfin
+  navidrome:
+    image: docker.io/deluan/navidrome:latest
+    container_name: navidrome
+    hostname: navidrome
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
     ports:
-      - 8096:8096/tcp
-    user: 1000:1000
+      - 4533:4533/tcp
     volumes:
-      - $HOME/containers/storage/jellyfin/cache:/cache:rw,Z
-      - $HOME/containers/storage/jellyfin/config:/config:rw,Z
-      - /mnt/hdd:/data:ro,z
-      - /mnt/ssd/media:/download:rw,z
+      - $HOME/containers/storage/navidrome/data:/data:rw,Z
+      - /mnt/hdd/music:/music:ro,z
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
