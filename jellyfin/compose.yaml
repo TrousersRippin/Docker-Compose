@@ -9,6 +9,8 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+    healthcheck:
+      disable: true
     ports:
       - 8096:8096/tcp
     user: 1000:1000

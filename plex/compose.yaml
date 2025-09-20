@@ -11,10 +11,7 @@ services:
       - TZ=Europe/Stockholm
       - PLEX_UID=1000
       - PLEX_GID=1000
-      - ADVERTISE_IP=${ADVERTISE_IP}
-      - ALLOWED_NETWORKS=${ALLOWED_NETWORKS}
-      - API=${API}
-      - VERSION=${VERSION}
+      - VERSION=docker
     ports:
       - 32400:32400/tcp
       - 1900:1900/udp
