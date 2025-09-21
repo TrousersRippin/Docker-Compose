@@ -9,10 +9,9 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
-      - REFRESH_TOKEN_EXPIRY=43200
-      - PORT=13378
+      - REFRESH_TOKEN_EXPIRY=2592000
     ports:
-      - 13378:13378/tcp
+      - 13378:80/tcp
     volumes:
       - $HOME/containers/storage/audiobookshelf/config:/config:rw,Z
       - $HOME/containers/storage/audiobookshelf/metadata:/metadata:rw,Z
