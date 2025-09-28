@@ -9,6 +9,7 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+      - ACCESS_TOKEN_EXPIRY=604800
       - REFRESH_TOKEN_EXPIRY=2592000
     ports:
       - 13378:80/tcp
