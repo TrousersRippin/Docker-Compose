@@ -45,7 +45,6 @@ services:
       - 8888:8888/tcp
     volumes:
       - $HOME/containers/storage/zigbee2mqtt/config:/app/data:rw,Z
-      - $HOME/containers/storage/mosquitto/certs/:/certs:ro,Z
       - /run/udev:/run/udev:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
@@ -54,7 +53,7 @@ services:
     depends_on:
       - mosquitto
     devices:
-      - /dev/ttyUSB0:/dev/ttyUSB0
+      - /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0:/dev/ttyUSB0
     labels:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
@@ -75,7 +74,6 @@ services:
       - 8123:8123/tcp
     volumes:
       - $HOME/containers/storage/home-assistant/config:/config:rw,Z
-      - $HOME/containers/storage/mosquitto/certs:/certs:ro,Z
       - /run/dbus:/run/dbus:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
