@@ -15,7 +15,6 @@ services:
     volumes:
       - $HOME/containers/storage/mosquitto/config:/mosquitto/config:rw,Z
       - $HOME/containers/storage/mosquitto/config/log:/mosquitto/log:rw,Z
-      - $HOME/containers/storage/mosquitto/certs:/mosquitto/certs:ro,Z
       - $HOME/containers/storage/mosquitto/data:/mosquitto/data:rw,Z
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
