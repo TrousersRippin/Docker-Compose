@@ -14,8 +14,8 @@ services:
     ports:
       - 1514:1514/tcp
     volumes:
-      - $HOME/containers/storage/promtail/config/promtail.yaml:/etc/promtail/promtail.yaml:ro,Z
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro,z
+      - $HOME/containers/storage/promtail/config/promtail.yaml:/etc/promtail/promtail.yaml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/log:/var/log:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
@@ -41,7 +41,7 @@ services:
     ports:
       - 3100:3100/tcp
     volumes:
-      - $HOME/containers/storage/loki/config/loki.yaml:/etc/loki/loki.yaml:ro,Z
+      - $HOME/containers/storage/loki/config/loki.yaml:/etc/loki/loki.yaml:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     depends_on:
@@ -65,10 +65,10 @@ services:
     ports:
       - 3333:3333/tcp
     volumes:
-      - $HOME/containers/storage/grafana/config/grafana.ini:/etc/grafana/grafana.ini:rw,Z
-      - $HOME/containers/storage/grafana/dashboards:/etc/grafana/dashboards:ro,Z
-      - $HOME/containers/storage/grafana/provisioning:/etc/grafana/provisioning:ro,Z
-      - $HOME/containers/storage/grafana/data:/var/lib/grafana:rw,Z
+      - $HOME/containers/storage/grafana/config/grafana.ini:/etc/grafana/grafana.ini:rw
+      - $HOME/containers/storage/grafana/dashboards:/etc/grafana/dashboards:ro
+      - $HOME/containers/storage/grafana/provisioning:/etc/grafana/provisioning:ro
+      - $HOME/containers/storage/grafana/data:/var/lib/grafana:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     depends_on:

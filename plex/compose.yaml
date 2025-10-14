@@ -23,10 +23,10 @@ services:
       - 32413:32413/udp
       - 32414:32414/udp
     volumes:
-      - $HOME/containers/storage/plex:/config:rw,Z
-      - $HOME/containers/storage/plex:/transcode:rw,Z
-      - /mnt/hdd:/data:ro,z
-      - /mnt/ssd/media:/download:rw,z
+      - $HOME/containers/storage/plex:/config:rw
+      - $HOME/containers/storage/plex:/transcode:rw
+      - /mnt/hdd:/data:ro
+      - /mnt/ssd/media:/download:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:

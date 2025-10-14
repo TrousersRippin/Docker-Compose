@@ -12,7 +12,7 @@ services:
     ports:
       - 6379:6379/tcp
     volumes:
-      - $HOME/containers/storage/redis/data:/data:rw,Z
+      - $HOME/containers/storage/redis/data:/data:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
@@ -43,10 +43,10 @@ services:
     ports:
       - 8000:8000/tcp
     volumes:
-      - $HOME/containers/storage/paperless/consume:/usr/src/paperless/consume:rw,Z
-      - $HOME/containers/storage/paperless/data:/usr/src/paperless/data:rw,Z
-      - $HOME/containers/storage/paperless/export:/usr/src/paperless/export:rw,Z
-      - $HOME/containers/storage/paperless/media:/usr/src/paperless/media:rw,Z
+      - $HOME/containers/storage/paperless/consume:/usr/src/paperless/consume:rw
+      - $HOME/containers/storage/paperless/data:/usr/src/paperless/data:rw
+      - $HOME/containers/storage/paperless/export:/usr/src/paperless/export:rw
+      - $HOME/containers/storage/paperless/media:/usr/src/paperless/media:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     depends_on:

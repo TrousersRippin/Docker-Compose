@@ -14,8 +14,8 @@ services:
     ports:
       - 8989:8989/tcp
     volumes:
-      - $HOME/containers/storage/sonarr/config:/config:rw,Z
-      - /mnt/ssd:/data:rw,z
+      - $HOME/containers/storage/sonarr/config:/config:rw
+      - /mnt/ssd:/data:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:

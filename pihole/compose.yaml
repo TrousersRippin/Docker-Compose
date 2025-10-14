@@ -22,7 +22,7 @@ services:
       - 53:53/tcp
       - 53:53/udp
     volumes:
-      - $HOME/containers/storage/pihole/config:/etc/pihole:rw,Z
+      - $HOME/containers/storage/pihole/config:/etc/pihole:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:

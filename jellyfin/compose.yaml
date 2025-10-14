@@ -15,10 +15,10 @@ services:
       - 8096:8096/tcp
     user: 1000:1000
     volumes:
-      - $HOME/containers/storage/jellyfin/cache:/cache:rw,Z
-      - $HOME/containers/storage/jellyfin/config:/config:rw,Z
-      - /mnt/hdd:/data:ro,z
-      - /mnt/ssd/media:/download:rw,z
+      - $HOME/containers/storage/jellyfin/cache:/cache:rw
+      - $HOME/containers/storage/jellyfin/config:/config:rw
+      - /mnt/hdd:/data:ro
+      - /mnt/ssd/media:/download:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:

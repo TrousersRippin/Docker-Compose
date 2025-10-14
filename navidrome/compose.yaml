@@ -14,8 +14,8 @@ services:
     ports:
       - 4533:4533/tcp
     volumes:
-      - $HOME/containers/storage/navidrome/data:/data:rw,Z
-      - /mnt/hdd/music:/music:ro,z
+      - $HOME/containers/storage/navidrome/data:/data:rw
+      - /mnt/hdd/music:/music:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:

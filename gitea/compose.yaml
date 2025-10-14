@@ -14,7 +14,7 @@ services:
     ports:
       - 3002:3002/tcp
     volumes:
-      - $HOME/containers/storage/gitea/config:/data:rw,Z
+      - $HOME/containers/storage/gitea/config:/data:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:

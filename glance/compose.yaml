@@ -12,8 +12,8 @@ services:
     ports:
       - 8087:8087/tcp
     volumes:
-      - $HOME/containers/storage/glance/config:/app/config:rw,Z
-      - $HOME/containers/storage/glance/icons:/app/assets:rw,Z
+      - $HOME/containers/storage/glance/config:/app/config:rw
+      - $HOME/containers/storage/glance/icons:/app/assets:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:

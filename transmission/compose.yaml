@@ -16,9 +16,9 @@ services:
       - 51413:51413/tcp
       - 51413:51413/udp
     volumes:
-      - $HOME/containers/storage/transmission/config:/config:rw,Z
-      - $HOME/containers/storage/transmission/config:/watch:rw,Z
-      - /mnt/ssd/torrents:/data/torrents:rw,z
+      - $HOME/containers/storage/transmission/config:/config:rw
+      - $HOME/containers/storage/transmission/config:/watch:rw
+      - /mnt/ssd/torrents:/data/torrents:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:

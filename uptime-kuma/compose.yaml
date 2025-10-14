@@ -12,7 +12,7 @@ services:
     ports:
       - 3001:3001/tcp
     volumes:
-      - $HOME/containers/storage/uptime-kuma/config:/app/data:rw,Z
+      - $HOME/containers/storage/uptime-kuma/config:/app/data:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro

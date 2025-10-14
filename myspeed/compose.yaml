@@ -12,7 +12,7 @@ services:
     ports:
       - 5216:5216/tcp
     volumes:
-      - $HOME/containers/storage/myspeed/config:/myspeed/data:rw,Z
+      - $HOME/containers/storage/myspeed/config:/myspeed/data:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:

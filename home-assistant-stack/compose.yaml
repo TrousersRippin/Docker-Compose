@@ -13,9 +13,9 @@ services:
     ports:
       - 1883:1883/tcp
     volumes:
-      - $HOME/containers/storage/mosquitto/config:/mosquitto/config:rw,Z
-      - $HOME/containers/storage/mosquitto/config/log:/mosquitto/log:rw,Z
-      - $HOME/containers/storage/mosquitto/data:/mosquitto/data:rw,Z
+      - $HOME/containers/storage/mosquitto/config:/mosquitto/config:rw
+      - $HOME/containers/storage/mosquitto/config/log:/mosquitto/log:rw
+      - $HOME/containers/storage/mosquitto/data:/mosquitto/data:rw
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
@@ -43,7 +43,7 @@ services:
     ports:
       - 8888:8888/tcp
     volumes:
-      - $HOME/containers/storage/zigbee2mqtt/config:/app/data:rw,Z
+      - $HOME/containers/storage/zigbee2mqtt/config:/app/data:rw
       - /run/udev:/run/udev:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
@@ -72,7 +72,7 @@ services:
     ports:
       - 8123:8123/tcp
     volumes:
-      - $HOME/containers/storage/home-assistant/config:/config:rw,Z
+      - $HOME/containers/storage/home-assistant/config:/config:rw
       - /run/dbus:/run/dbus:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
