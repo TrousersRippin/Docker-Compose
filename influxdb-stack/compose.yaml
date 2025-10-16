@@ -8,7 +8,7 @@ services:
       - no-new-privileges:true
     env_file:
       - .env
-    user: 1000:103
+    user: 1000:*
     ports:
       - 8125:8125/tcp
     volumes:
@@ -56,3 +56,5 @@ volumes:
 networks:
   proxy:
     external: true
+
+#getent group docker
