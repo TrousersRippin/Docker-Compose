@@ -29,17 +29,8 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    environment:
-      - TZ=Europe/Stockholm
-      - PAPERLESS_ADMIN_USER=${PAPERLESS_ADMIN_USER}
-      - PAPERLESS_ADMIN_PASSWORD=${PAPERLESS_ADMIN_PASSWORD}
-      - PAPERLESS_ADMIN_EMAIL=${PAPERLESS_ADMIN_EMAIL}
-      - PAPERLESS_OCR_LANGUAGE=${PAPERLESS_OCR_LANGUAGE}
-      - PAPERLESS_PORT=${PAPERLESS_PORT}
-      - PAPERLESS_REDIS=${PAPERLESS_REDIS}
-      - PAPERLESS_SECRET_KEY=${PAPERLESS_SECRET_KEY}
-      - PAPERLESS_TIME_ZONE=${PAPERLESS_TIME_ZONE}
-      - PAPERLESS_URL=${PAPERLESS_URL}
+    env_file:
+      - .env
     ports:
       - 8000:8000/tcp
     volumes:
