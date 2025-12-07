@@ -9,11 +9,12 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+      - DOZZLE_ADDR=:8008
       - DOZZLE_ENABLE_ACTIONS=true
       - DOZZLE_HOSTNAME=zimacube
       - DOZZLE_NO_ANALYTICS=true
     ports:
-      - 8008:8080/tcp
+      - 8008:8008/tcp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
