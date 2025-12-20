@@ -20,7 +20,6 @@ services:
       - $HOME/containers/storage/transmission/config:/watch:rw
       - /mnt/ssd/torrents:/data/torrents:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

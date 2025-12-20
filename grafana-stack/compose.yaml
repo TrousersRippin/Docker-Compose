@@ -19,7 +19,6 @@ services:
       - /var/log:/var/log:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:
@@ -43,7 +42,6 @@ services:
     volumes:
       - $HOME/containers/storage/loki/config/loki.yaml:/etc/loki/loki.yaml:ro
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     depends_on:
       - promtail
     networks:
@@ -70,7 +68,6 @@ services:
       - $HOME/containers/storage/grafana/provisioning:/etc/grafana/provisioning:ro
       - $HOME/containers/storage/grafana/data:/var/lib/grafana:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     depends_on:
       - loki
     networks:

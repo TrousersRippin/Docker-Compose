@@ -14,7 +14,6 @@ services:
     volumes:
       - $HOME/containers/storage/pulse/data:/data:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

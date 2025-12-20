@@ -14,7 +14,6 @@ services:
     volumes:
       - $HOME/containers/storage/memos/config:/var/opt/memos:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

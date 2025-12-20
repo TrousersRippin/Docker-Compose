@@ -16,7 +16,6 @@ services:
     volumes:
       - $HOME/containers/storage/overseerr/config:/config:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

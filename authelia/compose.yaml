@@ -18,7 +18,6 @@ services:
       - $HOME/containers/storage/authelia/config:/config:rw
       - $HOME/containers/storage/authelia/secrets:/run/secrets:ro
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

@@ -20,7 +20,6 @@ services:
     volumes:
       - photoprism-data:/var/lib/mysql:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:
@@ -69,7 +68,6 @@ services:
       - $HOME/containers/storage/photoprism:/photoprism/storage:rw
       - /mnt/hdd/photos:/photoprism/originals:ro
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     depends_on:
       mariadb:
         condition: service_healthy

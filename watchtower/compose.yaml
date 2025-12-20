@@ -19,7 +19,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     labels:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail

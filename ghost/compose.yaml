@@ -17,7 +17,6 @@ services:
       - $HOME/containers/storage/ghost/config/config.production.json:/var/lib/ghost/config.production.json:ro
       - $HOME/containers/storage/ghost/config:/var/lib/ghost/content:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

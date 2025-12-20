@@ -17,7 +17,6 @@ services:
       - $HOME/containers/storage/mosquitto/config/log:/mosquitto/log:rw
       - $HOME/containers/storage/mosquitto/data:/mosquitto/data:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:
@@ -46,7 +45,6 @@ services:
       - $HOME/containers/storage/zigbee2mqtt/config:/app/data:rw
       - /run/udev:/run/udev:ro
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     depends_on:
@@ -75,7 +73,6 @@ services:
       - $HOME/containers/storage/home-assistant/config:/config:rw
       - /run/dbus:/run/dbus:ro
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

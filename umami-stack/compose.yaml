@@ -19,7 +19,6 @@ services:
     volumes:
       - umami-data:/var/lib/postgresql/data:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:
@@ -40,7 +39,6 @@ services:
       - 3210:3210/tcp
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     depends_on:
       postgres:
         condition: service_healthy

@@ -14,7 +14,6 @@ services:
     volumes:
       - $HOME/containers/storage/gotify/config:/app/data:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

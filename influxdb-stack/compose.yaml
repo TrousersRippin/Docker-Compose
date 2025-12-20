@@ -16,7 +16,6 @@ services:
       - /:/hostfs:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:
@@ -39,7 +38,6 @@ services:
       - $HOME/containers/storage/influxdb/config:/etc/influxdb2:rw
       - influxdb-data:/var/lib/influxdb2:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     depends_on:
       - telegraf
     networks:

@@ -17,7 +17,6 @@ services:
       - $HOME/containers/storage/mkvtoolnix/config:/config:rw
       - /mnt/ssd:/storage:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

@@ -20,7 +20,6 @@ services:
       - /mnt/hdd:/data:ro
       - /mnt/ssd/media:/download:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

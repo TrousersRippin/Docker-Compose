@@ -17,7 +17,6 @@ services:
       - $HOME/containers/storage/radarr/config:/config:rw
       - /mnt/ssd:/data:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

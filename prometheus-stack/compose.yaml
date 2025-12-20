@@ -17,7 +17,6 @@ services:
       - $HOME/containers/storage/alertmanager/config/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml:ro
       - alertmanager-data:/alertmanager:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:
@@ -42,7 +41,6 @@ services:
     volumes:
       - /:/host:ro,rslave
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:
@@ -70,7 +68,6 @@ services:
       - $HOME/containers/storage/prometheus/config/alerts.yaml:/etc/prometheus/alerts.yaml:ro
       - prometheus-data:/prometheus:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     depends_on:

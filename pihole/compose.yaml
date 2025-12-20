@@ -21,7 +21,6 @@ services:
     volumes:
       - $HOME/containers/storage/pihole/config:/etc/pihole:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:

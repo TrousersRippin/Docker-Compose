@@ -18,7 +18,6 @@ services:
       - $HOME/containers/storage/filebrowser/database:/database:rw
       - /:/srv:rw
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     networks:
       - proxy
     labels:
