@@ -11,7 +11,7 @@ services:
       - TZ=Europe/Stockholm
       - EULA=TRUE
     ports:
-      - 19132:19132/tcp
+      - 19132:19132/udp
     stdin_open: true
     tty: true
     volumes:
