@@ -18,7 +18,7 @@ services:
       - $HOME/containers/storage/jellyfin/cache:/cache:rw
       - $HOME/containers/storage/jellyfin/config:/config:rw
       - /mnt/hdd:/data:ro
-      - /mnt/ssd/media:/download:rw
+      - /mnt/nvme/media:/download:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

@@ -15,7 +15,7 @@ services:
       - 6767:6767/tcp
     volumes:
       - $HOME/containers/storage/bazarr/config:/config:rw
-      - /mnt/ssd:/data:rw
+      - /mnt/nvme:/data:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

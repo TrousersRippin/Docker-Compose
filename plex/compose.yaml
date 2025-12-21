@@ -26,7 +26,7 @@ services:
       - $HOME/containers/storage/plex:/config:rw
       - $HOME/containers/storage/plex:/transcode:rw
       - /mnt/hdd:/data:ro
-      - /mnt/ssd/media:/download:rw
+      - /mnt/nvme/media:/download:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
