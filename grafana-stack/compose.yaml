@@ -60,6 +60,7 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
     ports:
       - 3333:3333/tcp
     volumes:
