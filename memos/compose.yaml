@@ -9,6 +9,7 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+    user: ${UID:-1000}:${GID:-1000}
     ports:
       - 5230:5230/tcp
     volumes:

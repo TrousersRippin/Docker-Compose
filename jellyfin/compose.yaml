@@ -9,11 +9,11 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+    user: ${UID:-1000}:${GID:-1000}
     healthcheck:
       disable: true
     ports:
       - 8096:8096/tcp
-    user: 1000:1000
     volumes:
       - $HOME/containers/storage/jellyfin/cache:/cache:rw
       - $HOME/containers/storage/jellyfin/config:/config:rw

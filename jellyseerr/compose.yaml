@@ -9,8 +9,8 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
-      - PUID=1000
-      - PGID=1000
+      - PORT=5055
+    user: ${UID:-1000}:${GID:-1000}
     ports:
       - 5055:5055/tcp
     volumes:
