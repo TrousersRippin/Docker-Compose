@@ -11,6 +11,9 @@ services:
       - TZ=Europe/Stockholm
     command:
       - --config.file=/etc/promtail/promtail.yaml
+    user: ${UID:-1000}:${GID:-1000}
+    group_add:
+      - ${DOCKER_GID}
     ports:
       - 1514:1514/tcp
     volumes:
@@ -37,6 +40,7 @@ services:
       - TZ=Europe/Stockholm
     command:
       - --config.file=/etc/loki/loki.yaml
+    user: ${UID:-10001}:${GID:-10001}
     ports:
       - 3100:3100/tcp
     volumes:
@@ -60,6 +64,7 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+    user: ${UID:-1000}:${GID:-1000}
     ports:
       - 3333:3333/tcp
     volumes:

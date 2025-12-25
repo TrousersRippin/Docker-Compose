@@ -11,11 +11,12 @@ services:
       - TZ=Europe/Stockholm
     command:
       - --config.file=/etc/alertmanager/alertmanager.yaml
+    user: 65534:65534
     ports:
       - 9093:9093/tcp
     volumes:
       - $HOME/containers/storage/alertmanager/config/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml:ro
-      - alertmanager-data:/alertmanager:rw
+      - $HOME/containers/storage/alertmanager/:/alertmanager:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
@@ -34,12 +35,18 @@ services:
     environment:
       - TZ=Europe/Stockholm
     command:
-      - --path.rootfs=/host
+      - --path.procfs=/host/proc
+      - --path.rootfs=/rootfs
+      - --path.sysfs=/host/sys
+      - --collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)
+    user: 65534:65534
     ports:
       - 9100:9100/tcp
     pid: host
     volumes:
-      - /:/host:ro,rslave
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
@@ -61,12 +68,13 @@ services:
       - --config.file=/etc/prometheus/prometheus.yaml
       - --web.enable-lifecycle
       - --web.listen-address=:9092
+    user: 65534:65534
     ports:
       - 9092:9092/tcp
     volumes:
       - $HOME/containers/storage/prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
       - $HOME/containers/storage/prometheus/config/alerts.yaml:/etc/prometheus/alerts.yaml:ro
-      - prometheus-data:/prometheus:rw
+      - $HOME/containers/storage/prometheus/:/prometheus:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
@@ -76,12 +84,6 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
-
-volumes:
-  alertmanager-data:
-    name: alertmanager-data
-  prometheus-data:
-    name: prometheus-data
 
 networks:
   proxy:
