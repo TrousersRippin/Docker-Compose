@@ -67,10 +67,9 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yaml
       - --web.enable-lifecycle
-      - --web.listen-address=:9092
     user: 65534:65534
     ports:
-      - 9092:9092/tcp
+      - 9090:9090/tcp
     volumes:
       - $HOME/containers/storage/prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
       - $HOME/containers/storage/prometheus/config/alerts.yaml:/etc/prometheus/alerts.yaml:ro

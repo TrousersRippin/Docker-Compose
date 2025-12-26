@@ -17,7 +17,7 @@ services:
     ports:
       - 5432:5432/tcp
     volumes:
-      - umami-data:/var/lib/postgresql/data:rw
+      - umami-data:/var/lib/postgresql:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

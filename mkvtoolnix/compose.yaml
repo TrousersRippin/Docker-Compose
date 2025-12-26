@@ -11,6 +11,7 @@ services:
       - TZ=Europe/Stockholm
       - PUID=1000
       - PGID=1000
+      - DARK_MODE=1
     ports:
       - 5800:5800/tcp
     volumes:

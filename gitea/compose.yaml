@@ -1,7 +1,7 @@
 ---
 services:
   gitea:
-    image: docker.io/gitea/gitea:latest
+    image: docker.io/gitea/gitea:latest-rootless
     container_name: gitea
     hostname: gitea
     restart: unless-stopped
@@ -14,7 +14,8 @@ services:
     ports:
       - 3002:3002/tcp
     volumes:
-      - $HOME/containers/storage/gitea/config:/data:rw
+      - $HOME/containers/storage/gitea/config:/etc/gitea:rw
+      - $HOME/containers/storage/gitea/data:/var/lib/gitea:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

@@ -39,7 +39,7 @@ services:
       - $HOME/containers/storage/paperless/media:/usr/src/paperless/media:rw
       - /etc/localtime:/etc/localtime:ro
     depends_on:
-      redis
+      - redis
     networks:
       - proxy
     labels:
