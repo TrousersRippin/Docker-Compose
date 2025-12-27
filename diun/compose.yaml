@@ -1,0 +1,19 @@
+---
+services:
+  diun:
+    image: docker.io/crazymax/diun:latest
+    container_name: diun
+    hostname: diun
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    command: serve
+    volumes:
+      - $HOME/containers/storage/diun/data:/data:rw
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - logging=promtail
+      - logging_jobname=containerlogs
