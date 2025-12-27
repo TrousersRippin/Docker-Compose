@@ -11,14 +11,13 @@ services:
       - .env
     user: ${UID:-1000}:${GID:-1000}
     ports:
-      - 3001:3001/tcp
+      - 8877:8877/tcp
     volumes:
       - $HOME/containers/storage/vaultwarden/data:/data:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
     labels:
-      - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
 

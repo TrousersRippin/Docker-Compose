@@ -18,7 +18,6 @@ services:
       - $HOME/containers/storage/mosquitto/data:/mosquitto/data:rw
       - /etc/localtime:/etc/localtime:ro
     labels:
-      - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
 
@@ -47,7 +46,6 @@ services:
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
     labels:
-      - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
 
@@ -68,6 +66,5 @@ services:
       - /run/dbus:/run/dbus:ro
       - /etc/localtime:/etc/localtime:ro
     labels:
-      - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs

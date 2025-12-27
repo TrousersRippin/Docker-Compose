@@ -21,7 +21,6 @@ services:
     networks:
       - proxy
     labels:
-      - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
 
@@ -51,7 +50,6 @@ services:
     networks:
       - proxy
     labels:
-      - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
 
@@ -80,7 +78,6 @@ services:
     depends_on:
       - node-exporter
     labels:
-      - com.centurylinklabs.watchtower.enable=true
       - logging=promtail
       - logging_jobname=containerlogs
 
