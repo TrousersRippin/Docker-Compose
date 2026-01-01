@@ -1,0 +1,25 @@
+---
+services:
+  minecraft:
+    image: ghcr.io/itzg/minecraft-bedrock-server:latest
+    container_name: minecraft
+    hostname: minecraft
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - EULA=TRUE
+    ports:
+      - 19132:19132/udp
+    stdin_open: true
+    tty: true
+    volumes:
+      - $HOME/containers/storage/minecraft/data:/data:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

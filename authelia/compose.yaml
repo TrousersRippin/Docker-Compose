@@ -1,0 +1,27 @@
+---
+services:
+  authelia:
+    image: ghcr.io/authelia/authelia:latest
+    container_name: authelia
+    hostname: authelia
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE=/run/secrets/jwt_secret
+    healthcheck:
+      disable: true
+    user: ${UID:-1000}:${GID:-1000}
+    ports:
+      - 9094:9094/tcp
+    volumes:
+      - $HOME/containers/storage/authelia/config:/config:rw
+      - $HOME/containers/storage/authelia/secrets:/run/secrets:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

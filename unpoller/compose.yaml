@@ -1,0 +1,21 @@
+---
+services:
+  unpoller:
+    image: ghcr.io/unpoller/unpoller:latest
+    container_name: unpoller
+    hostname: unpoller
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    ports:
+      - 9130:9130/tcp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

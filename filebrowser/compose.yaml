@@ -1,0 +1,26 @@
+---
+services:
+  filebrowser:
+    image: docker.io/filebrowser/filebrowser:latest
+    container_name: filebrowser
+    hostname: filebrowser
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    healthcheck:
+      disable: true
+    ports:
+      - 8005:8005/tcp
+    volumes:
+      - $HOME/containers/storage/filebrowser/config:/config:rw
+      - $HOME/containers/storage/filebrowser/database:/database:rw
+      - /:/srv:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

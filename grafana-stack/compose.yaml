@@ -1,0 +1,91 @@
+---
+services:
+  alloy:
+    image: docker.io/grafana/alloy:latest
+    container_name: alloy
+    hostname: zimacube
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    command: 
+      - run 
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
+    ports:
+      - 12345:12345/tcp
+    volumes:
+      - $HOME/containers/storage/alloy/config/config.alloy:/etc/alloy/config.alloy:ro
+      - alloy-data:/var/lib/alloy/data:rw
+      - /:/rootfs:ro
+      - /run:/run:ro
+      - /run/udev/data:/run/udev/data:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/log:/var/log:ro
+      - /var/log/journal:/var/log/journal:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+  loki:
+    image: docker.io/grafana/loki:latest
+    container_name: loki
+    hostname: loki
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    command:
+      - --config.file=/etc/loki/loki.yaml
+    ports:
+      - 3100:3100/tcp
+    volumes:
+      - $HOME/containers/storage/loki/config/loki.yaml:/etc/loki/loki.yaml:ro
+      - loki-data:/loki:rw
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - alloy
+    networks:
+      - proxy
+
+  grafana:
+    image: docker.io/grafana/grafana:latest
+    container_name: grafana
+    hostname: grafana
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    user: ${UID:-1000}:${GID:-1000}
+    ports:
+      - 3333:3333/tcp
+    volumes:
+      - $HOME/containers/storage/grafana/config/grafana.ini:/etc/grafana/grafana.ini:rw
+      - $HOME/containers/storage/grafana/dashboards:/etc/grafana/dashboards:ro
+      - $HOME/containers/storage/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana:rw
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - loki
+    networks:
+      - proxy
+
+volumes:
+  alloy-data:
+    name: alloy-data
+    external: true
+  loki-data:
+    name: loki-data
+    external: true
+  grafana-data:
+    name: grafana-data
+    external: true
+
+networks:
+  proxy:
+    external: true

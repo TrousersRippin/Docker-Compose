@@ -1,0 +1,25 @@
+---
+services:
+  ghost:
+    image: docker.io/library/ghost:latest
+    container_name: ghost
+    hostname: ghost
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - 2368:2368/tcp
+    volumes:
+      - $HOME/containers/storage/ghost/config/config.production.json:/var/lib/ghost/config.production.json:ro
+      - $HOME/containers/storage/ghost/config:/var/lib/ghost/content:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

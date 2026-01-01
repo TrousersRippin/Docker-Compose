@@ -1,0 +1,23 @@
+---
+services:
+  gotify:
+    image: ghcr.io/gotify/server:latest
+    container_name: gotify
+    hostname: gotify
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    user: ${UID:-1000}:${GID:-1000}
+    ports:
+      - 8001:8001/tcp
+    volumes:
+      - $HOME/containers/storage/gotify/config:/app/data:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

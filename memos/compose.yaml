@@ -1,0 +1,23 @@
+---
+services:
+  memos:
+    image: ghcr.io/usememos/memos:stable
+    container_name: memos
+    hostname: memos
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    user: ${UID:-1000}:${GID:-1000}
+    ports:
+      - 5230:5230/tcp
+    volumes:
+      - $HOME/containers/storage/memos/config:/var/opt/memos:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,44 @@
+---
+services:
+  redis:
+    image: docker.io/library/redis:latest
+    container_name: redis
+    hostname: redis
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - 6379:6379/tcp
+    volumes:
+      - $HOME/containers/storage/redis/data:/data:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+  paperless-ngx:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless-ngx
+    hostname: paperless-ngx
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    ports:
+      - 8000:8000/tcp
+    volumes:
+      - $HOME/containers/storage/paperless/consume:/usr/src/paperless/consume:rw
+      - $HOME/containers/storage/paperless/data:/usr/src/paperless/data:rw
+      - $HOME/containers/storage/paperless/export:/usr/src/paperless/export:rw
+      - $HOME/containers/storage/paperless/media:/usr/src/paperless/media:rw
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - redis
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

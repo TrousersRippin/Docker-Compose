@@ -1,0 +1,22 @@
+---
+services:
+  wud:
+    image: ghcr.io/getwud/wud:latest
+    container_name: wud
+    hostname: wud
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
+    ports:
+      - 3322:3322/tcp
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

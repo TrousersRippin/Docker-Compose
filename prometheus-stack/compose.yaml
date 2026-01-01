@@ -1,0 +1,58 @@
+---
+services:
+  alertmanager:
+    image: docker.io/prom/alertmanager:latest
+    container_name: alertmanager
+    hostname: alertmanager
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yaml
+    user: 65534:65534
+    ports:
+      - 9093:9093/tcp
+    volumes:
+      - $HOME/containers/storage/alertmanager/config/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml:ro
+      - alertmanager-data:/alertmanager:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+  prometheus:
+    image: docker.io/prom/prometheus:latest
+    container_name: prometheus
+    hostname: prometheus
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --web.enable-lifecycle
+    user: 65534:65534
+    ports:
+      - 9090:9090/tcp
+    volumes:
+      - $HOME/containers/storage/prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - $HOME/containers/storage/prometheus/config/alerts.yaml:/etc/prometheus/alerts.yaml:ro
+      - prometheus-data:/prometheus:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+volumes:
+  alertmanager-data:
+    name: alertmanager-data
+    external: true
+  prometheus-data:
+    name: prometheus-data
+    external: true
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,22 @@
+---
+services:
+  myspeed:
+    image: docker.io/germannewsmaker/myspeed:latest
+    container_name: myspeed
+    hostname: myspeed
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - 5216:5216/tcp
+    volumes:
+      - $HOME/containers/storage/myspeed/config:/myspeed/data:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

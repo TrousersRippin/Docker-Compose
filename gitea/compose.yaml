@@ -1,0 +1,26 @@
+---
+services:
+  gitea:
+    image: ghcr.io/go-gitea/gitea:latest-rootless
+    container_name: gitea
+    hostname: gitea
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - USER_UID=1000
+      - USER_GID=1000
+    ports:
+      - 3002:3002/tcp
+      - 2222:2222/tcp
+    volumes:
+      - $HOME/containers/storage/gitea/config:/etc/gitea:rw
+      - $HOME/containers/storage/gitea/data:/var/lib/gitea:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

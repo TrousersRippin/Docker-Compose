@@ -1,0 +1,26 @@
+---
+services:
+  uptime-kuma:
+    image: ghcr.io/louislam/uptime-kuma:2-rootless
+    container_name: uptime-kuma
+    hostname: uptime-kuma
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    ports:
+      - 3001:3001/tcp
+    volumes:
+      - $HOME/containers/storage/uptime-kuma/data:/app/data:rw
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+    labels:
+      - wud.watch=true
+      - wud.autoUpdate=false
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,28 @@
+---
+services:
+  jellyfin:
+    image: ghcr.io/jellyfin/jellyfin:latest
+    container_name: jellyfin
+    hostname: jellyfin
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+    user: ${UID:-1000}:${GID:-1000}
+    healthcheck:
+      disable: true
+    ports:
+      - 8096:8096/tcp
+    volumes:
+      - $HOME/containers/storage/jellyfin/cache:/cache:rw
+      - $HOME/containers/storage/jellyfin/config:/config:rw
+      - /mnt/hdd:/data:ro
+      - /mnt/nvme/media:/download:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
