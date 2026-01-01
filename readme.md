@@ -12,5 +12,5 @@ Pull the repo into an empty folder. Add you own .env file to each folder.
 
 Make the required directory for bind mount.
 ```bash
-mkdir -p $HOME/containers/storage*
+mkdir -p $HOME/containers/storage/*
 ```
