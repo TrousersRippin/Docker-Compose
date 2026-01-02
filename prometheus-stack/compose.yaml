@@ -32,6 +32,7 @@ services:
       - TZ=Europe/Stockholm
     command:
       - --config.file=/etc/prometheus/prometheus.yaml
+      #- --web.config.file=/etc/prometheus/web.yaml
       - --web.enable-remote-write-receiver
       - --web.enable-lifecycle
     user: 65534:65534
@@ -40,6 +41,7 @@ services:
     volumes:
       - $HOME/containers/storage/prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
       - $HOME/containers/storage/prometheus/config/alerts.yaml:/etc/prometheus/alerts.yaml:ro
+      #- $HOME/containers/storage/prometheus/config/web.yaml:/etc/prometheus/web.yaml:ro
       - prometheus-data:/prometheus:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
