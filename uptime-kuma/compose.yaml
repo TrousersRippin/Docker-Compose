@@ -18,8 +18,7 @@ services:
     networks:
       - proxy
     labels:
-      - wud.watch=true
-      - wud.autoUpdate=false
+      - wud.watch=false
 
 networks:
   proxy:
