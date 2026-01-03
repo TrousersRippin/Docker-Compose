@@ -35,6 +35,7 @@ services:
     ports:
       - 8086:8086/tcp
     volumes:
+      - $HOME/containers/storage/influxdb/config/config.yaml:/etc/influxdb2/config.yaml:ro
       - $HOME/containers/storage/influxdb/config:/etc/influxdb2:rw
       - influxdb-data:/var/lib/influxdb2:rw
       - /etc/localtime:/etc/localtime:ro
