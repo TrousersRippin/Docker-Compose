@@ -5,6 +5,7 @@ services:
     container_name: plex
     hostname: plex.thenoisykeyboard.com
     restart: unless-stopped
+    network_mode: host
     security_opt:
       - no-new-privileges:true
     environment:
@@ -12,6 +13,7 @@ services:
       - PLEX_UID=1000
       - PLEX_GID=1000
       - VERSION=docker
+      - PLEX_CLAIM=*****
     ports:
       - 32400:32400/tcp
       - 1900:1900/udp
@@ -28,9 +30,3 @@ services:
       - /mnt/hdd:/data:ro
       - /mnt/nvme/media:/download:rw
       - /etc/localtime:/etc/localtime:ro
-    networks:
-      - proxy
-
-networks:
-  proxy:
-    external: true
