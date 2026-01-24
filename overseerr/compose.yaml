@@ -1,7 +1,7 @@
 ---
 services:
   overseerr:
-    image: lscr.io/linuxserver/overseerr:latest
+    image: docker.io/sctx/overseerr:latest
     container_name: overseerr
     hostname: overseerr
     restart: unless-stopped
@@ -14,7 +14,7 @@ services:
     ports:
       - 5055:5055/tcp
     volumes:
-      - $HOME/containers/storage/overseerr/config:/config:rw
+      - $HOME/containers/storage/overseerr/config:/app/config:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
