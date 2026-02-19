@@ -1,18 +1,20 @@
 ---
 services:
-  uptime-kuma:
-    image: ghcr.io/louislam/uptime-kuma:2-rootless
-    container_name: uptime-kuma
-    hostname: uptime-kuma
+  dockge:
+    image: docker.io/louislam/dockge:latest
+    container_name: dockge
+    hostname: dockge
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+      - DOCKGE_STACKS_DIR=$HOME/.config/compose
     ports:
-      - 3001:3001/tcp
+      - 5001:5001/tcp
     volumes:
-      - $HOME/containers/storage/uptime-kuma/data:/app/data:rw
+      - $HOME/.config/compose:$HOME/.config/compose
+      - $HOME/containers/storage/dockge/data:/app/data:rw
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
     networks:
