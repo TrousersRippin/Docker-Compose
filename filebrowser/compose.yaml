@@ -1,4 +1,3 @@
----
 services:
   filebrowser:
     image: docker.io/filebrowser/filebrowser:latest
@@ -7,8 +6,12 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - stack.env
+    environment:
+      - TZ=${TZ}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - FB_USERNAME=${FB_USERNAME}
+      - FB_PASSWORD=${FB_PASSWORD}
     healthcheck:
       disable: true
     ports:
@@ -20,7 +23,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
-
 networks:
   proxy:
     external: true
