@@ -14,7 +14,7 @@ services:
     ports:
       - 5055:5055/tcp
     volumes:
-      - $HOME/containers/storage/overseerr/config:/app/config:rw
+      - /opt/stacks/overseerr/config:/app/config:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

@@ -13,7 +13,7 @@ services:
     ports:
       - 5230:5230/tcp
     volumes:
-      - $HOME/containers/storage/memos/config:/var/opt/memos:rw
+      - /opt/stacks/memos/config:/var/opt/memos:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

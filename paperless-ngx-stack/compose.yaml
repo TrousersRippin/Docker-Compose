@@ -12,7 +12,7 @@ services:
     ports:
       - 6379:6379/tcp
     volumes:
-      - $HOME/containers/storage/redis/data:/data:rw
+      - /opt/stacks/redis/data:/data:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
@@ -29,10 +29,10 @@ services:
     ports:
       - 8000:8000/tcp
     volumes:
-      - $HOME/containers/storage/paperless/consume:/usr/src/paperless/consume:rw
-      - $HOME/containers/storage/paperless/data:/usr/src/paperless/data:rw
-      - $HOME/containers/storage/paperless/export:/usr/src/paperless/export:rw
-      - $HOME/containers/storage/paperless/media:/usr/src/paperless/media:rw
+      - /opt/stacks/paperless/consume:/usr/src/paperless/consume:rw
+      - /opt/stacks/paperless/data:/usr/src/paperless/data:rw
+      - /opt/stacks/paperless/export:/usr/src/paperless/export:rw
+      - /opt/stacks/paperless/media:/usr/src/paperless/media:rw
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       - redis

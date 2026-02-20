@@ -15,8 +15,8 @@ services:
     ports:
       - 8096:8096/tcp
     volumes:
-      - $HOME/containers/storage/jellyfin/cache:/cache:rw
-      - $HOME/containers/storage/jellyfin/config:/config:rw
+      - /opt/stacks/jellyfin/cache:/cache:rw
+      - /opt/stacks/jellyfin/config:/config:rw
       - /mnt/hdd:/data:ro
       - /mnt/nvme/media:/download:rw
       - /etc/localtime:/etc/localtime:ro

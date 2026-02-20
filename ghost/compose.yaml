@@ -14,8 +14,8 @@ services:
     ports:
       - 2368:2368/tcp
     volumes:
-      - $HOME/containers/storage/ghost/config/config.production.json:/var/lib/ghost/config.production.json:ro
-      - $HOME/containers/storage/ghost/config:/var/lib/ghost/content:rw
+      - /opt/stacks/ghost/config/config.production.json:/var/lib/ghost/config.production.json:ro
+      - /opt/stacks/ghost/config:/var/lib/ghost/content:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

@@ -14,7 +14,7 @@ services:
     ports:
       - 6767:6767/tcp
     volumes:
-      - $HOME/containers/storage/bazarr/config:/config:rw
+      - /opt/stacks/bazarr/config:/config:rw
       - /mnt/nvme:/data:rw
       - /etc/localtime:/etc/localtime:ro
     networks:

@@ -14,7 +14,7 @@ services:
     ports:
       - 9696:9696/tcp
     volumes:
-      - $HOME/containers/storage/prowlarr/config:/config:rw
+      - /opt/stacks/prowlarr/config:/config:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

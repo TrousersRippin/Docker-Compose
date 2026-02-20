@@ -15,7 +15,7 @@ services:
     ports:
       - 9093:9093/tcp
     volumes:
-      - $HOME/containers/storage/alertmanager/config/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml:ro
+      - /opt/stacks/alertmanager/config/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml:ro
       - alertmanager-data:/alertmanager:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
@@ -39,9 +39,9 @@ services:
     ports:
       - 9090:9090/tcp
     volumes:
-      - $HOME/containers/storage/prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
-      - $HOME/containers/storage/prometheus/config/alerts.yaml:/etc/prometheus/alerts.yaml:ro
-      #- $HOME/containers/storage/prometheus/config/web.yaml:/etc/prometheus/web.yaml:ro
+      - /opt/stacks/prometheus/config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - /opt/stacks/prometheus/config/alerts.yaml:/etc/prometheus/alerts.yaml:ro
+      #- /opt/stacks/prometheus/config/web.yaml:/etc/prometheus/web.yaml:ro
       - prometheus-data:/prometheus:rw
       - /etc/localtime:/etc/localtime:ro
     networks:

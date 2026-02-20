@@ -13,7 +13,7 @@ services:
     ports:
       - 8001:8001/tcp
     volumes:
-      - $HOME/containers/storage/gotify/config:/app/data:rw
+      - /opt/stacks/gotify/config:/app/data:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

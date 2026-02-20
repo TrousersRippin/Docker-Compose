@@ -14,7 +14,7 @@ services:
     ports:
       - 5055:5055/tcp
     volumes:
-      - $HOME/containers/storage/jellyseerr/config:/app/config:rw
+      - /opt/stacks/jellyseerr/config:/app/config:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

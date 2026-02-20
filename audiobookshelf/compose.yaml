@@ -15,8 +15,8 @@ services:
     ports:
       - 13378:80/tcp
     volumes:
-      - $HOME/containers/storage/audiobookshelf/config:/config:rw
-      - $HOME/containers/storage/audiobookshelf/metadata:/metadata:rw
+      - /opt/stacks/audiobookshelf/config:/config:rw
+      - /opt/stacks/audiobookshelf/metadata:/metadata:rw
       - /mnt/hdd/audiobooks:/audiobooks:ro
       - /etc/localtime:/etc/localtime:ro
     networks:

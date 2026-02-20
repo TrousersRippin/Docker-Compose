@@ -15,7 +15,7 @@ services:
     ports:
       - 8125:8125/tcp
     volumes:
-      - $HOME/containers/storage/telegraf/config/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /opt/stacks/telegraf/config/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /:/hostfs:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
@@ -35,8 +35,8 @@ services:
     ports:
       - 8086:8086/tcp
     volumes:
-      - $HOME/containers/storage/influxdb/config/config.yaml:/etc/influxdb2/config.yaml:ro
-      - $HOME/containers/storage/influxdb/config:/etc/influxdb2:rw
+      - /opt/stacks/influxdb/config/config.yaml:/etc/influxdb2/config.yaml:ro
+      - /opt/stacks/influxdb/config:/etc/influxdb2:rw
       - influxdb-data:/var/lib/influxdb2:rw
       - /etc/localtime:/etc/localtime:ro
     depends_on:

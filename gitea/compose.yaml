@@ -15,8 +15,8 @@ services:
       - 3002:3002/tcp
       - 2222:2222/tcp
     volumes:
-      - $HOME/containers/storage/gitea/config:/etc/gitea:rw
-      - $HOME/containers/storage/gitea/data:/var/lib/gitea:rw
+      - /opt/stacks/gitea/config:/etc/gitea:rw
+      - /opt/stacks/gitea/data:/var/lib/gitea:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

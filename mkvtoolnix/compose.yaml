@@ -15,7 +15,7 @@ services:
     ports:
       - 5800:5800/tcp
     volumes:
-      - $HOME/containers/storage/mkvtoolnix/config:/config:rw
+      - /opt/stacks/mkvtoolnix/config:/config:rw
       - /mnt/nvme:/storage:rw
       - /etc/localtime:/etc/localtime:ro
     networks:

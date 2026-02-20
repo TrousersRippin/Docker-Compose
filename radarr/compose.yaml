@@ -14,7 +14,7 @@ services:
     ports:
       - 7878:7878/tcp
     volumes:
-      - $HOME/containers/storage/radarr/config:/config:rw
+      - /opt/stacks/radarr/config:/config:rw
       - /mnt/nvme:/data:rw
       - /etc/localtime:/etc/localtime:ro
     networks:

@@ -14,10 +14,10 @@ services:
       - 80:80/tcp
       - 443:443/tcp
     volumes:
-      - $HOME/containers/storage/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
-      - $HOME/containers/storage/traefik/config/dynamic.yml:/etc/traefik/dynamic.yml:ro
-      - $HOME/containers/storage/traefik/config/log:/var/log/traefik:rw
-      - $HOME/containers/storage/traefik/data:/etc/traefik/data:rw
+      - /opt/stacks/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
+      - /opt/stacks/traefik/config/dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - /opt/stacks/traefik/config/log:/var/log/traefik:rw
+      - /opt/stacks/traefik/data:/etc/traefik/data:rw
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
     networks:

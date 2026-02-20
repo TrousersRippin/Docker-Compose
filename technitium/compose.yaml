@@ -19,7 +19,7 @@ services:
       # - 443:443/udp      # DNS-over-HTTPS (HTTP/3)
       # - 443:443/tcp      # DNS-over-HTTPS (HTTP/1.1, HTTP/2)
     volumes:
-      - $HOME/containers/storage/technitium/config:/etc/dns:rw
+      - /opt/stacks/technitium/config:/etc/dns:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

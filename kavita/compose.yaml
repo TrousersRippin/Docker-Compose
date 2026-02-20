@@ -13,7 +13,7 @@ services:
     ports:
       - 5000:5000/tcp
     volumes:
-      - $HOME/containers/storage/kavita/config:/kavita/config:rw
+      - /opt/stacks/kavita/config:/kavita/config:rw
       - /mnt/hdd/books:/books:ro
       - /etc/localtime:/etc/localtime:ro
     networks:

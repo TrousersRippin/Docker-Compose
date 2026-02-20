@@ -12,8 +12,8 @@ services:
     ports:
       - 3000:3000/tcp
     volumes:
-      - $HOME/containers/storage/homepage/config:/config:rw
-      - $HOME/containers/storage/homepage/icons:/app/public/icons:rw
+      - /opt/stacks/homepage/config:/config:rw
+      - /opt/stacks/homepage/icons:/app/public/icons:rw
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/hdd:/mnt/hdd:ro
       - /mnt/nvme:/mnt/nvme:ro

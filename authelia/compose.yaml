@@ -16,8 +16,8 @@ services:
     ports:
       - 9094:9094/tcp
     volumes:
-      - $HOME/containers/storage/authelia/config:/config:rw
-      - $HOME/containers/storage/authelia/secrets:/run/secrets:ro
+      - /opt/stacks/authelia/config:/config:rw
+      - /opt/stacks/authelia/secrets:/run/secrets:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

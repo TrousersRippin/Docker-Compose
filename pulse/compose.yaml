@@ -12,7 +12,7 @@ services:
     ports:
       - 7655:7655/tcp
     volumes:
-      - $HOME/containers/storage/pulse/data:/data:rw
+      - /opt/stacks/pulse/data:/data:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

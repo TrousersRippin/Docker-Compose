@@ -14,8 +14,8 @@ services:
     ports:
       - 8005:8005/tcp
     volumes:
-      - $HOME/containers/storage/filebrowser/config:/config:rw
-      - $HOME/containers/storage/filebrowser/database:/database:rw
+      - /opt/stacks/filebrowser/config:/config:rw
+      - /opt/stacks/filebrowser/database:/database:rw
       - /:/srv:rw
       - /etc/localtime:/etc/localtime:ro
     networks:

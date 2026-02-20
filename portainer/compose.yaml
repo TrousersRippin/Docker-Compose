@@ -1,18 +1,20 @@
 ---
 services:
-  uptime-kuma:
-    image: ghcr.io/louislam/uptime-kuma:2-rootless
-    container_name: uptime-kuma
-    hostname: uptime-kuma
+  portainer:
+    image: docker.io/portainer/portainer-ee:lts
+    container_name: portainer
+    hostname: portainer
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
     ports:
-      - 3001:3001/tcp
+      - 8000:8000/tcp
+      - 9443:9443/tcp
+      - 9000:9000/tcp
     volumes:
-      - /opt/stacks/uptime-kuma/data:/app/data:rw
+      - /opt/stacks/portainer/data:/data:rw
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
     networks:

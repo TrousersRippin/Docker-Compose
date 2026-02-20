@@ -14,7 +14,7 @@ services:
       - 5001:5001/tcp
     volumes:
       - $HOME/.config/compose:$HOME/.config/compose
-      - $HOME/containers/storage/dockge/data:/app/data:rw
+      - /opt/stacks/dockge/data:/app/data:rw
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
     networks:

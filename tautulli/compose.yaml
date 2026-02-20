@@ -14,7 +14,7 @@ services:
     ports:
       - 8181:8181/tcp
     volumes:
-      - $HOME/containers/storage/tautulli/config:/config:rw
+      - /opt/stacks/tautulli/config:/config:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

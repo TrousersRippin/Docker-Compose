@@ -17,7 +17,7 @@ services:
       - 22000:22000/tcp
       - 22000:22000/udp
     volumes:
-      - $HOME/containers/storage/syncthing:/var/syncthing:rw
+      - /opt/stacks/syncthing:/var/syncthing:rw
       - $HOME:/var/syncthing/home:rw
       - /etc/localtime:/etc/localtime:ro
     networks:

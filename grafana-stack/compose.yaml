@@ -18,7 +18,7 @@ services:
     ports:
       - 12345:12345/tcp
     volumes:
-      - $HOME/containers/storage/alloy/config/config.alloy:/etc/alloy/config.alloy:ro
+      - /opt/stacks/alloy/config/config.alloy:/etc/alloy/config.alloy:ro
       - alloy-data:/var/lib/alloy/data:rw
       - /:/rootfs:ro
       - /run:/run:ro
@@ -46,7 +46,7 @@ services:
       - 4317:4317/tcp
       - 4318:4318/tcp
     volumes:
-      - $HOME/containers/storage/tempo/config/tempo.yaml:/etc/tempo.yaml:ro
+      - /opt/stacks/tempo/config/tempo.yaml:/etc/tempo.yaml:ro
       - tempo-data:/var/tempo:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
@@ -66,7 +66,7 @@ services:
     ports:
       - 3100:3100/tcp
     volumes:
-      - $HOME/containers/storage/loki/config/loki.yaml:/etc/loki/loki.yaml:ro
+      - /opt/stacks/loki/config/loki.yaml:/etc/loki/loki.yaml:ro
       - loki-data:/loki:rw
       - /etc/localtime:/etc/localtime:ro
     depends_on:
@@ -87,9 +87,9 @@ services:
     ports:
       - 3333:3333/tcp
     volumes:
-      - $HOME/containers/storage/grafana/config/grafana.ini:/etc/grafana/grafana.ini:rw
-      - $HOME/containers/storage/grafana/dashboards:/etc/grafana/dashboards:ro
-      - $HOME/containers/storage/grafana/provisioning:/etc/grafana/provisioning:ro
+      - /opt/stacks/grafana/config/grafana.ini:/etc/grafana/grafana.ini:rw
+      - /opt/stacks/grafana/dashboards:/etc/grafana/dashboards:ro
+      - /opt/stacks/grafana/provisioning:/etc/grafana/provisioning:ro
       - grafana-data:/var/lib/grafana:rw
       - /etc/localtime:/etc/localtime:ro
     depends_on:

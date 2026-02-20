@@ -13,7 +13,7 @@ services:
     ports:
       - 8877:8877/tcp
     volumes:
-      - $HOME/containers/storage/vaultwarden/data:/data:rw
+      - /opt/stacks/vaultwarden/data:/data:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy

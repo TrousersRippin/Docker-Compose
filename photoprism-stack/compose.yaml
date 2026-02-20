@@ -18,8 +18,8 @@ services:
     ports:
       - 3306:3306/tcp
     volumes:
-      - $HOME/containers/storage/mariadb/config:/etc/mysql/conf.d
-      - $HOME/containers/storage/mariadb/data:/var/lib/mysql:rw
+      - /opt/stacks/mariadb/config:/etc/mysql/conf.d
+      - /opt/stacks/mariadb/data:/var/lib/mysql:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
@@ -36,7 +36,7 @@ services:
     ports:
       - 2342:2342/tcp
     volumes:
-      - $HOME/containers/storage/photoprism:/photoprism/storage:rw
+      - /opt/stacks/photoprism:/photoprism/storage:rw
       - /mnt/hdd/photos:/photoprism/originals:ro
       - /etc/localtime:/etc/localtime:ro
     depends_on:
