@@ -7,8 +7,13 @@ services:
     restart: unless-stopped
     sysctls:
       - net.ipv4.ip_local_port_range=1024 65000
-    env_file:
-      - .env
+    environment:
+      - TZ=${TZ}
+      - DNS_SERVER_ADMIN_PASSWORD=${DNS_SERVER_ADMIN_PASSWORD}
+      - DNS_SERVER_DOMAIN=${DNS_SERVER_DOMAIN}
+      - DNS_SERVER_FORWARDERS=${DNS_SERVER_FORWARDERS}
+      - DNS_SERVER_PREFER_IPV6=${DNS_SERVER_PREFER_IPV6}
+      - DNS_SERVER_RECURSION=${DNS_SERVER_RECURSION}
     ports:
       - 5380:5380/tcp
       - 53:53/tcp

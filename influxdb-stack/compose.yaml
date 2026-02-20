@@ -6,8 +6,15 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
+    environment:
+      - TZ=${TZ}
+      - HOST_ETC=${HOST_ETC}
+      - HOST_PROC=${HOST_PROC}
+      - HOST_SYS=${HOST_SYS}
+      - HOST_VAR=${HOST_VAR}
+      - HOST_RUN=${HOST_RUN}
+      - HOST_MOUNT_PREFIX=${HOST_MOUNT_PREFIX}
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
     command: ["--non-strict-env-handling"]
     user: ${UID:-1000}:${GID:-1000}
     group_add:
@@ -29,8 +36,16 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    env_file:
-      - .env
+    environment:
+      - TZ=${TZ}
+      - INFLUXD_SESSION_LENGTH=${INFLUXD_SESSION_LENGTH}
+      - DOCKER_INFLUXDB_INIT_MODE=${DOCKER_INFLUXDB_INIT_MODE}
+      - DOCKER_INFLUXDB_INIT_USERNAME=${DOCKER_INFLUXDB_INIT_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${DOCKER_INFLUXDB_INIT_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${DOCKER_INFLUXDB_INIT_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${DOCKER_INFLUXDB_INIT_BUCKET}
+      - DOCKER_INFLUXDB_INIT_RETENTION=${DOCKER_INFLUXDB_INIT_RETENTION}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}
     user: ${UID:-1000}:${GID:-1000}
     ports:
       - 8086:8086/tcp
