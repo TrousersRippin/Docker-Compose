@@ -40,7 +40,10 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
-    command: ["-config.file=/etc/tempo.yaml"]
+    command:
+      - -config.file=/etc/tempo.yaml
+      - -target=distributor,ingester,compactor,querier
+      - -server.log-level=warn
     ports:
       - 3200:3200/tcp
       - 4317:4317/tcp
