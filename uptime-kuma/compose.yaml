@@ -17,6 +17,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
+    labels:
+      - wud.watch=false
 
 networks:
   proxy:

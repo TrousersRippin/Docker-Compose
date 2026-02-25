@@ -1,0 +1,83 @@
+---
+services:
+  postgres:
+    image: docker.io/library/postgres:alpine
+    container_name: postgres
+    hostname: postgres
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    ports:
+      - 5432:5432/tcp
+    volumes:
+      - postgresql-data:/var/lib/postgresql:rw
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+  zabbix-backend:
+    image: docker.io/zabbix/zabbix-server-pgsql:latest
+    container_name: zabbix-backend
+    hostname: zabbix-backend
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - DB_SERVER_HOST=${DB_SERVER_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - 10051:10051/tcp
+    volumes:
+      - /opt/stacks/zabbix:/usr/lib/zabbix/alertscripts:rw
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - proxy
+
+  zabbix-frontend:
+    image: docker.io/zabbix/zabbix-web-nginx-pgsql:latest
+    container_name: zabbix-frontend
+    hostname: zabbix-frontend
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - DB_SERVER_HOST=${DB_SERVER_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - ZBX_SERVER_HOST=${ZBX_SERVER_HOST}
+      - PHP_TZ=${TZ}
+    ports:
+      - 8080:8080/tcp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - proxy
+
+volumes:
+  postgres-data:
+    external: true
+
+networks:
+  proxy:
+    external: true
