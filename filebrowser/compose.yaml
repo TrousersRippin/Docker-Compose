@@ -12,6 +12,7 @@ services:
       - PGID=${PGID}
       - FB_USERNAME=${FB_USERNAME}
       - FB_PASSWORD=${FB_PASSWORD}
+      - FB_PORT=${FB_PORT}
     healthcheck:
       disable: true
     ports:
