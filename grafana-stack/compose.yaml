@@ -110,9 +110,6 @@ volumes:
   loki-data:
     name: loki-data
     external: true
-  grafana-data:
-    name: grafana-data
-    external: true
 
 networks:
   proxy:
