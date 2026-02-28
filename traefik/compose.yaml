@@ -15,7 +15,6 @@ services:
       - 8080:8080/tcp
       - 80:80/tcp
       - 443:443/tcp
-      - 8443:8443/tcp
     volumes:
       - /opt/stacks/traefik/config/traefik.yml:/etc/traefik/traefik.yml:ro
       - /opt/stacks/traefik/config/dynamic.yml:/etc/traefik/dynamic.yml:ro
