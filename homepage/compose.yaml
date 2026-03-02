@@ -10,6 +10,8 @@ services:
     environment:
       - TZ=${TZ}
       - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS}
+    healthcheck:
+      disable: true
     ports:
       - 3000:3000/tcp
     volumes:
