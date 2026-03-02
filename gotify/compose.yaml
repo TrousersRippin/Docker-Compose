@@ -12,6 +12,8 @@ services:
       - GOTIFY_DEFAULTUSER_NAME=${GOTIFY_DEFAULTUSER_NAME}
       - GOTIFY_DEFAULTUSER_PASS=${GOTIFY_DEFAULTUSER_PASS}
       - GOTIFY_SERVER_PORT=${GOTIFY_SERVER_PORT}
+    healthcheck:
+      disable: true
     user: ${UID:-1000}:${GID:-1000}
     ports:
       - 8001:8001/tcp
