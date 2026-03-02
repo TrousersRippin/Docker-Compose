@@ -11,6 +11,8 @@ services:
       - TZ=Europe/Stockholm
       - PUID=1000
       - PGID=1000
+    healthcheck:
+      disable: true
     ports:
       - 8181:8181/tcp
     volumes:
