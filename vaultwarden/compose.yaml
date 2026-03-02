@@ -29,6 +29,8 @@ services:
       - WEBSOCKET_ENABLED=${WEBSOCKET_ENABLED}
       - UID=${UID:-1000}
       - GID=${GID:-1000}
+    healthcheck:
+      disable: true
     user: ${UID:-1000}:${GID:-1000}
     ports:
       - 8877:8877/tcp
