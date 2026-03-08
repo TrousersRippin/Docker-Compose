@@ -33,6 +33,7 @@ services:
       - 2283:2283/tcp
     volumes:
       - /opt/stacks/immich/upload:/usr/src/app/upload:rw
+      - /opt/stacks/immich/data:/data:rw
       - /mnt/hdd/photos:/usr/src/app/photos:ro
       - /etc/localtime:/etc/localtime:ro
     depends_on:
