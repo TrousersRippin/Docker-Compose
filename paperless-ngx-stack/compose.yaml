@@ -2,15 +2,14 @@
 services:
   redis:
     image: docker.io/library/redis:latest
-    container_name: redis
-    hostname: redis
+    container_name: paperless-redis
+    hostname: paperless-redis
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     environment:
       - TZ=${TZ}
     volumes:
-      - /opt/stacks/redis/data:/data:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
