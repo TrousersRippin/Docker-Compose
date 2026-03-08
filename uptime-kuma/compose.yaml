@@ -9,7 +9,6 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
-      - DATABASE_URL=${DATABASE_URL}
     healthcheck:
       disable: true
     ports:
