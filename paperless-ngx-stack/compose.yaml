@@ -9,8 +9,6 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=${TZ}
-    ports:
-      - 6379:6379/tcp
     volumes:
       - /opt/stacks/redis/data:/data:rw
       - /etc/localtime:/etc/localtime:ro
@@ -35,8 +33,14 @@ services:
       - PAPERLESS_SECRET_KEY=${PAPERLESS_SECRET_KEY}
       - PAPERLESS_TIME_ZONE=${PAPERLESS_TIME_ZONE}
       - PAPERLESS_URL=${PAPERLESS_URL}
+      - PAPERLESS_DBENGINE=postgresql
+      - PAPERLESS_DBHOST=${PAPERLESS_DBHOST}
+      - PAPERLESS_DBPORT=${PAPERLESS_DBPORT}
+      - PAPERLESS_DBNAME=${PAPERLESS_DBNAME}
+      - PAPERLESS_DBUSER=${PAPERLESS_DBUSER}
+      - PAPERLESS_DBPASS=${PAPERLESS_DBPASS}
     ports:
-      - 8000:8000/tcp
+      - 8124:8124/tcp
     volumes:
       - /opt/stacks/paperless/consume:/usr/src/paperless/consume:rw
       - /opt/stacks/paperless/data:/usr/src/paperless/data:rw

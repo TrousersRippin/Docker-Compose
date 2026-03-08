@@ -1,30 +1,5 @@
 ---
 services:
-  postgres:
-    image: docker.io/library/postgres:alpine
-    container_name: postgres
-    hostname: postgres
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    environment:
-      - TZ=${TZ}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
-    ports:
-      - 5432:5432/tcp
-    volumes:
-      - postgres-data:/var/lib/postgresql:rw
-      - /etc/localtime:/etc/localtime:ro
-    networks:
-      - proxy
-
   umami:
     image: ghcr.io/umami-software/umami:latest
     container_name: umami
@@ -42,15 +17,8 @@ services:
       - 3210:3210/tcp
     volumes:
       - /etc/localtime:/etc/localtime:ro
-    depends_on:
-      postgres:
-        condition: service_healthy
     networks:
       - proxy
-
-volumes:
-  postgres-data:
-    external: true
 
 networks:
   proxy:
