@@ -1,28 +1,5 @@
 ---
 services:
-  postgres:
-    image: docker.io/library/postgres:17
-    container_name: postgres
-    hostname: postgres
-    restart: unless-stopped
-    network_mode: host
-    security_opt:
-      - no-new-privileges:true
-    environment:
-      - TZ=${TZ}
-      - PGDATA=${PGDATA}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
-    volumes:
-      - postgres-data:/var/lib/postgresql/data:rw
-      - /etc/localtime:/etc/localtime:ro
-
   zabbix-backend:
     image: docker.io/zabbix/zabbix-server-pgsql:latest
     container_name: zabbix-backend
@@ -43,9 +20,6 @@ services:
       - /opt/stacks/zabbix/export:/var/lib/zabbix/export:rw
       - /opt/stacks/zabbix/snmptraps:/var/lib/zabbix/snmptraps:rw
       - /etc/localtime:/etc/localtime:ro
-    depends_on:
-      postgres:
-        condition: service_healthy
 
   zabbix-frontend:
     image: docker.io/zabbix/zabbix-web-nginx-pgsql:latest
@@ -66,11 +40,5 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
     depends_on:
-      postgres:
-        condition: service_healthy
       zabbix-backend:
         condition: service_started
-
-volumes:
-  postgres-data:
-    external: true
