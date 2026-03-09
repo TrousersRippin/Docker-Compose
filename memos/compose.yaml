@@ -9,6 +9,8 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+      - MEMOS_DRIVER=postgres
+      - MEMOS_DSN=postgresql://memos:${MEMOS_DB_PASSWORD}@${MEMOS_DB_HOST}:5432/memos
     user: ${UID:-1000}:${GID:-1000}
     ports:
       - 5230:5230/tcp
