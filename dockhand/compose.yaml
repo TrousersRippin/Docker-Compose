@@ -1,0 +1,28 @@
+services:
+  dockhand:
+    image: docker.io/fnsys/dockhand:latest
+    container_name: dockhand
+    hostname: dockhand
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=Europe/Stockholm
+      - PUID=1000
+      - PGID=1000
+      - PORT=3003
+      - DATABASE_URL=postgresql://dockhand:${DOCKHAND_DB_PASSWORD}@${DOCKHAND_DB_HOST}:5432/dockhand
+    healthcheck:
+      disable: true
+    ports:
+      - 3003:3003/tcp
+    volumes:
+      - /opt/stacks/dockhand/data:/app/data:rw
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
