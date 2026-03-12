@@ -21,6 +21,7 @@ services:
       - ${DOCKER_GID}
     ports:
       - 8125:8125/tcp
+      - 9273:9273/tcp
     volumes:
       - /opt/stacks/telegraf/config/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /:/hostfs:ro
