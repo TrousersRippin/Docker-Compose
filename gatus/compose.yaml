@@ -9,11 +9,12 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+      - GATUS_CONFIG_PATH=/config
       - GATUS_PORT=8899
     ports:
       - 8899:8899/tcp
     volumes:
-      - /opt/stacks/gatus/config/config.yaml:/config/config.yaml:ro
+      - /opt/stacks/gatus/config/config.yaml:/config:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
