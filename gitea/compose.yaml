@@ -19,7 +19,7 @@ services:
       - GITEA__database__SSL_MODE=${GITEA__database__SSL_MODE}
     ports:
       - 3002:3002/tcp
-      - 2222:2222:tcp
+      - 2222:2222/tcp
     volumes:
       - /opt/stacks/gitea/config:/etc/gitea:rw
       - /opt/stacks/gitea/data:/var/lib/gitea:rw
