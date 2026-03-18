@@ -8,9 +8,10 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      - TZ=Europe/Stockholm
-      - GATUS_CONFIG_PATH=/config
-      - GATUS_PORT=8899
+      - TZ=${TZ}
+      - GATUS_CONFIG_PATH=${GATUS_CONFIG_PATH}
+      - GATUS_DB_URL=${GATUS_DB_URL}
+      - GATUS_PORT=${GATUS_PORT}
     ports:
       - 8899:8899/tcp
     volumes:
