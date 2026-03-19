@@ -10,6 +10,7 @@ services:
     environment:
       - TZ=${TZ}
     volumes:
+      - /opt/stacks/redis/data:/data:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
