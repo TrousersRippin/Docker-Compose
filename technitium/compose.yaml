@@ -14,6 +14,8 @@ services:
       - DNS_SERVER_FORWARDERS=${DNS_SERVER_FORWARDERS}
       - DNS_SERVER_PREFER_IPV6=${DNS_SERVER_PREFER_IPV6}
       - DNS_SERVER_RECURSION=${DNS_SERVER_RECURSION}
+      - DOTNET_GCConserveMemory=9
+      - DOTNET_gcServer=0
     ports:
       - 5380:5380/tcp
       - 53:53/tcp
