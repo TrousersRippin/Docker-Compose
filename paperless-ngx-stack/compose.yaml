@@ -39,6 +39,8 @@ services:
       - PAPERLESS_DBNAME=${PAPERLESS_DBNAME}
       - PAPERLESS_DBUSER=${PAPERLESS_DBUSER}
       - PAPERLESS_DBPASS=${PAPERLESS_DBPASS}
+    healthcheck:
+      disable: true
     ports:
       - 8124:8124/tcp
     volumes:
