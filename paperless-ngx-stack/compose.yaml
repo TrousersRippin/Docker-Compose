@@ -2,8 +2,8 @@
 services:
   redis:
     image: docker.io/library/redis:latest
-    container_name: paperless-redis
-    hostname: paperless-redis
+    container_name: redis
+    hostname: redis
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
