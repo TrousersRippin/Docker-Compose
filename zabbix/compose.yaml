@@ -45,6 +45,25 @@ services:
       zabbix-backend:
         condition: service_started
 
+  zabbix-agent:
+    image: docker.io/zabbix/zabbix-agent2:latest
+    container_name: zabbix-agent
+    hostname: zabbix-agent
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - ZBX_SERVER_HOST=${ZBX_SERVER_HOST}
+      - ZBX_HOSTNAME=${ZBX_HOSTNAME}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+    depends_on:
+      zabbix-backend:
+        condition: service_started
+
 networks:
   proxy:
     external: true
