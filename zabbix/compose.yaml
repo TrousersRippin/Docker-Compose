@@ -13,6 +13,8 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - 10051:10051/tcp
     volumes:
       - /etc/localtime:/etc/localtime:ro
     networks:
