@@ -1,0 +1,46 @@
+---
+services:
+  zabbix-backend:
+    image: docker.io/zabbix/zabbix-server-pgsql:latest
+    container_name: zabbix-backend
+    hostname: zabbix-backend
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - DB_SERVER_HOST=${DB_SERVER_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
+
+  zabbix-frontend:
+    image: docker.io/zabbix/zabbix-web-nginx-pgsql:latest
+    container_name: zabbix-frontend
+    hostname: zabbix-frontend
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
+      - DB_SERVER_HOST=${DB_SERVER_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - ZBX_SERVER_HOST=${ZBX_SERVER_HOST}
+      - PHP_TZ=${TZ}
+    ports:
+      - 8765:8080/tcp
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      zabbix-backend:
+        condition: service_started
+
+networks:
+  proxy:
+    external: true
