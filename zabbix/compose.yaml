@@ -37,6 +37,8 @@ services:
       - 8765:8080/tcp
     volumes:
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - proxy
     depends_on:
       zabbix-backend:
         condition: service_started
