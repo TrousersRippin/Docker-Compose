@@ -35,6 +35,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - PHP_TZ=${TZ}
       - ZBX_SERVER_HOST=${ZBX_SERVER_HOST}
+    healthcheck:
+      disable: true
     ports:
       - 8765:8080/tcp
     volumes:
