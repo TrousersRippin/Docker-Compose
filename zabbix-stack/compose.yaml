@@ -41,11 +41,10 @@ services:
       - 8765:8080/tcp
     volumes:
       - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - zabbix-backend
     networks:
       - proxy
-    depends_on:
-      zabbix-backend:
-        condition: service_started
 
   zabbix-agent:
     image: docker.io/zabbix/zabbix-agent2:latest
@@ -60,11 +59,10 @@ services:
       - ZBX_SERVER_HOST=${ZBX_SERVER_HOST}
     volumes:
       - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - zabbix-backend
     networks:
       - proxy
-    depends_on:
-      zabbix-backend:
-        condition: service_started
 
 networks:
   proxy:
