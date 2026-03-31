@@ -16,6 +16,10 @@ services:
     ports:
       - 10051:10051/tcp
     volumes:
+      - /opt/stacks/zabbix/alertscripts:/usr/lib/zabbix/alertscripts:rw
+      - /opt/stacks/zabbix/externalscripts:/usr/lib/zabbix/externalscripts:rw
+      - /opt/stacks/zabbix/export:/var/lib/zabbix/export:rw
+      - /opt/stacks/zabbix/snmptraps:/var/lib/zabbix/snmptraps:rw
       - /etc/localtime:/etc/localtime:ro
     networks:
       - proxy
