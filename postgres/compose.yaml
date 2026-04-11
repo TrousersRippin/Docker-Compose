@@ -10,6 +10,7 @@ services:
     environment:
       - TZ=${TZ}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    command: postgres --hba-file=/etc/postgresql/pg_hba.conf
     ports:
       - 5432:5432/tcp
     volumes:
