@@ -1,7 +1,7 @@
 ---
 services:
   zabbix-backend:
-    image: docker.io/zabbix/zabbix-server-pgsql:alpine-7.2-latest
+    image: docker.io/zabbix/zabbix-server-pgsql:alpine-7.4-latest
     container_name: zabbix-backend
     hostname: zabbix-backend
     restart: unless-stopped
@@ -25,7 +25,7 @@ services:
       - proxy
 
   zabbix-frontend:
-    image: docker.io/zabbix/zabbix-web-nginx-pgsql:alpine-7.2-latest
+    image: docker.io/zabbix/zabbix-web-nginx-pgsql:alpine-7.4-latest
     container_name: zabbix-frontend
     hostname: zabbix-frontend
     restart: unless-stopped
@@ -51,7 +51,7 @@ services:
       - proxy
 
   zabbix-agent:
-    image: docker.io/zabbix/zabbix-agent2:alpine-7.2-latest
+    image: docker.io/zabbix/zabbix-agent2:alpine-7.4-latest
     container_name: zabbix-agent
     hostname: zabbix-agent
     restart: unless-stopped
