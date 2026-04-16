@@ -11,10 +11,12 @@ services:
       - TZ=Europe/Stockholm
       - DOZZLE_ADDR=:8008
       - DOZZLE_ENABLE_ACTIONS=true
+      - DOZZLE_HOSTNAME=ZimaCube
       - DOZZLE_NO_ANALYTICS=true
     ports:
       - 8008:8008/tcp
     volumes:
+      - /opt/stacks/dozzle/data:/data
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
     networks:
