@@ -84,6 +84,7 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
+    user: 0:0
     ports:
       - 3333:3333/tcp
     volumes:
