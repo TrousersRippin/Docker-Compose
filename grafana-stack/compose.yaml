@@ -37,6 +37,7 @@ services:
     container_name: tempo
     hostname: tempo
     restart: unless-stopped
+    stop_grace_period: 1m
     security_opt:
       - no-new-privileges:true
     environment:
@@ -58,6 +59,7 @@ services:
     container_name: loki
     hostname: loki
     restart: unless-stopped
+    stop_grace_period: 1m
     security_opt:
       - no-new-privileges:true
     environment:
@@ -84,7 +86,6 @@ services:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Stockholm
-    user: 0:0
     ports:
       - 3333:3333/tcp
     volumes:
