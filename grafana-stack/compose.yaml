@@ -32,28 +32,6 @@ services:
     networks:
       - proxy
 
-  tempo:
-    image: docker.io/grafana/tempo:2.10.0
-    container_name: tempo
-    hostname: tempo
-    restart: unless-stopped
-    stop_grace_period: 1m
-    security_opt:
-      - no-new-privileges:true
-    environment:
-      - TZ=Europe/Stockholm
-    command: ["-config.file=/etc/tempo.yaml"]
-    ports:
-      - 3200:3200/tcp
-      - 4317:4317/tcp
-      - 4318:4318/tcp
-    volumes:
-      - /opt/stacks/tempo/config/tempo.yaml:/etc/tempo.yaml:ro
-      - tempo-data:/var/tempo:rw
-      - /etc/localtime:/etc/localtime:ro
-    networks:
-      - proxy
-
   loki:
     image: docker.io/grafana/loki:latest
     container_name: loki
@@ -102,9 +80,6 @@ services:
 volumes:
   alloy-data:
     name: alloy-data
-    external: true
-  tempo-data:
-    name: tempo-data
     external: true
   loki-data:
     name: loki-data
